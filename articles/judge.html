@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Judging Journals</title>
+<link rel="stylesheet" href="../w3.css">
+<link rel="stylesheet" href="../graphiccite.css">
+<script src="d3.v3.min.js"  charset="utf-8"></script>
+<script src="http://d3js.org/d3.v3.min.js"  charset="utf-8"></script>
+</head>
+<body class="w3-animate-opacity">
+
+<div id = "top">    <a href="https://graphiccite.github.io/" <span class="w3-center w3-padding-xlarge w3-dark-grey w3-xlarge w3-wide w3-animate-opacity">GRAPHIC <span class="w3-hide-small">CITE</span> </span></a>
+
+<!--Twitter button-->
+<a href="https://twitter.com/suchalilnerd" class="twitter-follow-button" data-show-count="false">Follow @suchalilnerd</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+<div class= "descript">
+<h1>Judging Journals</h1>
+<p>How do you judge a journal? The red circles are the journals I read most. Drag them around to see what they are. The bigger they are the bigger their impact factor. Click the black box next to the metric's name to fire the animation (If the animation freezes just click a circle to reboot).
+</p>
+  <h2>Impact Factor</h2>
+  <p>The average number of citations for papers from the last two years.
+Impact factor is the most common journal metric but it is not the only one. This is particularly true since 2013; the signing of DORA. The aim of DORA was to stop journal impact factors being used to judge scientists. Partly because journals for primary literature have lower impact factors than review journals.
+</p>
+  <h2>Immediacy index</h2>
+<p>Immediacy index is the average number citations in the year of publication. It is supposed to indicate how topical the research of that journal is. Yellow is low, red is high. Pink is super high, just for Nature, because it's four times higher than second place.
+</p>
+  <h2>Half-life</h2>
+<p>Half-life is a nice opposite to immediacy. How long is a journal's output is relevant? Counting backwards how many year’s worth of articles do you have to include before you have half of this year’s citations to ANY article from this journal. This is a cool idea but it's obviously biased against new journals. To counter this it's capped at 10 years.
+</p>
+<p>Most of the journals have high half-lives. Except the genetics journals, a rapidly developing field, and the open access journal PLOS one.
+</p>
+  <h2>Eigen factor</h2>
+  <p>A complex algorithmic measure of how much time a scientist will spend reading that particular journal. It is similar to google's page rank algorithm. Calculated from the number of times it cites other journals and the number of times other journals cite it, both of which are weighted by the rank of the other journal. It has a weird chicken and egg vibe.
+</p>
+<p>Nature and PNAS, two major multidisciplinary journals come out top here. Surprisingly, side-by-side with PLOS one. That's because it's not weighted by number of articles.
+</p>
+  <h2>Article Influence</h2>
+  <p>This is based on the eigenfactor but weighted for number of articles. The larger this is the more times an article will cite and be cited on average.
+</p>
+</div>
+<script>
+var w = 900,
+    h = 500;
+
+var nodes = [
+{name:"	Nature	", JIF:	38.138	,Immediacy:	9.518	, halflife:	10	, eigenfactor:	1.44256	,scimago:	21.936	, article_influence:	22.215	},
+{name:"	Trends in Ecology & Evolution	", JIF:	16.735	,Immediacy:	2.658	, halflife:	10	, eigenfactor:	0.04868	,scimago:	11.087	, article_influence:	8.653	},
+{name:"	PNAS	", JIF:	9.423	,Immediacy:	1.984	, halflife:	8.7	, eigenfactor:	1.32197	,scimago:	6.883	, article_influence:	4.682	},
+{name:"	Molecular Ecology	", JIF:	5.947	,Immediacy:	1.201	, halflife:	7.6	, eigenfactor:	0.06418	,scimago:	3.925	, article_influence:	2.097	},
+{name:"	Philosophical transactions of the Royal Society B	", JIF:	5.847	,Immediacy:	2.581	, halflife:	7.5	, eigenfactor:	0.07876	,scimago:	2.659	, article_influence:	3.166	},
+{name:"	Molecular Ecology Resources	", JIF:	5.398	,Immediacy:	1.417	, halflife:	5.2	, eigenfactor:	0.0245	,scimago:	2.331	, article_influence:	2.382	},
+{name:"	Proceedings of the Royal Society B	", JIF:	4.823	,Immediacy:	0.962	, halflife:	8.3	, eigenfactor:	0.09328	,scimago:	2.375	, article_influence:	2.281	},
+{name:"	Genetics	", JIF:	4.644	,Immediacy:	0.963	, halflife:	10	, eigenfactor:	0.05292	,scimago:	4.27	, article_influence:	2.313	},
+{name:"	Evolution	", JIF:	4.007	,Immediacy:	0.741	, halflife:	10	, eigenfactor:	0.04106	,scimago:	3.204	, article_influence:	1.85	},
+{name:"	Heredity	", JIF:	3.801	,Immediacy:	1.109	, halflife:	10	, eigenfactor:	0.01301	,scimago:	2.118	, article_influence:	1.336	},
+{name:"	Animal Behaviour	", JIF:	3.169	,Immediacy:	0.646	, halflife:	10	, eigenfactor:	0.02541	,scimago:	1.907	, article_influence:	1.067	},
+{name:"	American Naturalist	", JIF:	3.148	,Immediacy:	1.198	, halflife:	10	, eigenfactor:	0.024	,scimago:	2.867	, article_influence:	1.858	},
+{name:"	PLoS one	", JIF:	3.057	,Immediacy:	0.396	, halflife:	3.1	, eigenfactor:	1.81369	,scimago:	1.395	, article_influence:	1.137	},
+{name:"	Behavioral Ecology	", JIF:	3.029	,Immediacy:	1.023	, halflife:	8.4	, eigenfactor:	0.01473	,scimago:	1.698	, article_influence:	1.126	},
+{name:"	Journal of Evolutionary Biology	", JIF:	2.747	,Immediacy:	0.569	, halflife:	6.9	, eigenfactor:	0.02409	,scimago:	2.009	, article_influence:	1.255	},
+{name:"	Behavioral Ecology and Sociobiology	", JIF:	2.382	,Immediacy:	0.446	, halflife:	10	, eigenfactor:	0.01416	,scimago:	1.373	, article_influence:	0.989	},
+{name:"	Journal of Heredity	", JIF:	2.075	,Immediacy:	0.512	, halflife:	10	, eigenfactor:	0.00429	,scimago:	1.024	, article_influence:	0.592	},
+{name:"	Conservation Genetics	", JIF:	2.04	,Immediacy:	0.383	, halflife:	6.37	, eigenfactor:	0.00751	,scimago:	0.849	, article_influence:	0.663	},
+{name:"	Journal of Zoology	", JIF:	1.819	,Immediacy:	0.475	, halflife:	10	, eigenfactor:	0.00531	,scimago:	1.032	, article_influence:	0.689	},
+]
+/*impact factors and number of relevant articles in journal*/
+var JIFs = [];
+var halfs = [];
+var immediates =[];
+var eigens = [];
+var scis = [];
+var influences = [];
+
+for (var i = 0; i<nodes.length; i++){
+  JIFs[i] = nodes[i].JIF
+  halfs[i] = nodes[i].halflife
+  immediates[i] = nodes[i].Immediacy
+  eigens[i] = nodes[i].eigenfactor
+  scis[i] = nodes[i].scimago
+  influences[i] = nodes[i].article_influence
+}
+
+var rScale = d3.scale.linear()
+  .domain([d3.min(JIFs),d3.max(JIFs)])
+  .range([10,100])
+
+var colorScale = d3.scale.linear()
+.domain([d3.min(immediates),3,d3.max(immediates)])
+// .range(['#2c5ff0','#9c27b0','#e91e63'])
+ .range(['#ffe01f','#ec0626','#ff3399'])
+;
+var xScale = d3.scale.linear()
+  .domain([d3.min(halfs),d3.max(halfs)])
+  .range([-200,200])
+
+var y1Scale = d3.scale.linear()
+  .domain([d3.min(eigens),d3.max(eigens)])
+  .range([150,-150])
+
+var y2Scale = d3.scale.linear()
+ .domain([d3.min(influences),d3.max(influences)])
+  .range([150,-150])
+
+
+/*links between nodes, nodes are specified by possition in the array which is zero indexed*/
+var vis = d3.select("body")
+    .append("svg:svg")
+      .attr("class", "stage")
+      .attr("width", w)
+      .attr("height", h);
+
+var force = d3.layout.force()
+    .nodes(nodes)
+    .links([])
+    .gravity(0.15)
+    .charge(function(d){
+    return -50*(d.JIF)
+    })
+	.friction(0.5)
+    .size([w, h]);
+
+var links = [
+];
+
+var link = vis.selectAll(".link")
+  .data(links)
+  .enter().append("line")
+  .attr("class", "link")
+  .attr("stroke", function(d){
+    return (d.colour)
+    })
+    .attr("fill", "none")
+    .attr("stroke-width", function(d){
+      return 3*(d.width)
+      });
+
+
+var node = vis.selectAll("circle.node")
+  .data(nodes)
+  .enter().append("g")
+  .attr("class", "node")
+
+  .on("mouseover", function(d) {
+    d3.select(this).select("text")
+    .transition()  
+    .duration(300)
+    .attr("opacity","1")
+    })
+
+  .on("mouseout", function(d,i) {
+    d3.select(this).select("text")
+  .transition()
+  .duration(300)
+  .attr("opacity","0")
+  })
+
+      .call(force.drag);
+
+
+    //CIRCLE
+    node.append("svg:circle")
+      .attr("cx", function(d) { return d.x; })
+      .attr("cy", function(d) { return d.y; })
+      .attr("r", function(d){
+      return rScale(d.JIF)
+    })
+      .attr("stroke", "white")
+      .attr("stroke-width", 5)
+      .attr("stroke-opacity",1)
+      .attr("fill", "#ec0626")
+
+     
+    //TEXT
+    node.append("text")
+      .text(function(d, i) { return d.name; })
+      .attr("font-family",  "Sans-Serif")
+      .attr("fill","black")
+      .attr("opacity",0)
+/*the i condition is the position in the node or link array. begining is left of the node, end is right*/
+
+
+force.on("tick", function(e) {
+  node.attr("transform", function(d, i) {     
+        return "translate(" + d.x + "," + d.y + ")"; 
+    });
+    
+   link.attr("x1", function(d)   { return d.source.x; })
+       .attr("y1", function(d)   { return d.source.y; })
+       .attr("x2", function(d)   { return d.target.x; })
+       .attr("y2", function(d)   { return d.target.y; })
+})
+
+force.start();
+
+//append to vis because the svg is called vis
+var colourbut = vis.append("rect")
+  .attr("x",10)
+  .attr("y",330)
+  .attr("height", 20)
+  .attr("width", 20)
+  .on("click", function(){
+    node.select("circle").transition()
+      .duration(1000)
+         .attr("fill", function(d){
+    return colorScale(d.Immediacy)
+    })
+  })
+
+var xbut = vis.append("rect")
+  .attr("x",10)
+  .attr("y",355)
+  .attr("height", 20)
+  .attr("width", 20)
+  .on("click", function(){
+    force.gravity(2)
+      .charge(function(d){
+    return -50*(d.JIF)
+    })
+    node.select("circle").transition()
+    .duration(1000)
+      .attr("cx", function(d){
+        return xScale(d.halflife)
+    })
+  })
+
+var y1but = vis.append("rect")
+  .attr("x",10)
+  .attr("y",380)
+  .attr("height", 20)
+  .attr("width", 20)
+  .on("click", function(){
+    force.gravity(2)
+      .charge(function(d){
+    return -50*(d.JIF)
+    })
+    node.select("circle").transition()
+    .duration(1000)
+      .attr("cy", function(d){
+        return y1Scale(d.eigenfactor)
+    })
+  })
+
+var y2but = vis.append("rect")
+  .attr("x",10)
+  .attr("y",405)
+  .attr("height", 20)
+  .attr("width", 20)
+  .on("click", function(){
+    force.gravity(2)
+      .charge(function(d){
+    return -50*(d.JIF)
+    })
+    node.select("circle").transition()
+    .duration(1000)
+      .attr("cy", function(d){
+        return y2Scale(d.article_influence)
+    })
+  })
+
+vis.append('text')
+.text('Immediacy')
+.attr('x',35)
+.attr('y',345)
+vis.append('text')
+.text('Half-life')
+.attr('x',35)
+.attr('y',370)
+vis.append('text')
+.text('Eigen factor')
+.attr('x',35)
+.attr('y',395)
+vis.append('text')
+.text('Article influence')
+.attr('x',35)
+.attr('y',420)
+</script>
+<div id="foot">
+Check out <a href="https://thedenatured.github.io/">The Denatured </a>
+</div>
+</body>
+</html>
+

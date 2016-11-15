@@ -10,6 +10,163 @@
 
 <div id = "top">    <a href="https://graphiccite.github.io/" <span class="w3-center w3-padding-xlarge w3-dark-grey w3-xlarge w3-wide w3-animate-opacity">GRAPHIC <span class="w3-hide-small">CITE</span> </span></a>
 
+<script>
+var w = 900,
+    h = 500;
+
+var nodes = [
+{name:"	Molecular Ecology	", IF:	5.947	, relevance:	79	},
+{name:"	Proceedings of the Royal Society B	", IF:	5.051	, relevance:	40	},
+{name:"	Evolution	", IF:	4.612	, relevance:	29	},
+{name:"	Evolution: international journal of organic evolution	", IF:	4.007	, relevance:	15	},
+{name:"	Heredity	", IF:	3.801	, relevance:	15	},
+{name:"	Journal of Evolutionary Biology	", IF:	3.483	, relevance:	15	},
+{name:"	Behavioral Ecology	", IF:	3.083	, relevance:	14	},
+{name:"	Journal of Heredity	", IF:	2.075	, relevance:	13	},
+{name:"	Nature	", IF:	38.138	, relevance:	13	},
+{name:"	Molecular Ecology Notes	", IF:	5.298	, relevance:	12	},
+{name:"	Animal Behaviour	", IF:	3.068	, relevance:	10	},
+{name:"	Molecular Ecology Resources	", IF:	5.298	, relevance:	10	},
+{name:"	PLoS one	", IF:	3.234	, relevance:	10	},
+{name:"	PNAS	", IF:	9.423	, relevance:	10	},
+{name:"	Conservation Genetics	", IF:	2.04	, relevance:	9	},
+{name:"	Genetics	", IF:	5.963	, relevance:	9	},
+{name:"	Trends in Ecology & Evolution	", IF:	16.735	, relevance:	9	},
+{name:"	Behavioral Ecology and Sociobiology	", IF:	2.565	, relevance:	7	},
+{name:"	Biology letters	", IF:	2.823	, relevance:	6	},
+{name:"	Journal of Zoology	", IF:	1.545	, relevance:	6	},
+{name:"	The American Naturalist	", IF:	4.725	, relevance:	6	},
+{name:"	Philosophical transactions of the Royal Society B	", IF:	7.055	, relevance:	5	},
+{name:"	Scientific reports	", IF:	5.228	, relevance:	2	},
+  ]
+/*impact factors and number of relevant articles in journal*/
+var IFs = [];
+var refs = [];
+
+for (var i = 0; i<nodes.length; i++){
+  IFs[i] = nodes[i].IF
+  refs[i] = nodes[i].relevance
+}
+
+var rScale = d3.scale.linear()
+  .domain([d3.min(refs),d3.max(refs)])
+  .range([10,100])
+
+var colorScale = d3.scale.linear()
+//  .domain([d3.min(IFs),(d3.max(IFs)-d3.min(IFs))/2+d3.min(IFs),d3.max(IFs)])
+  .domain([d3.min(IFs),7,d3.max(IFs)])
+// .range(['#2c5ff0','#9c27b0','#e91e63'])
+ .range(['#ffe01f','#ec0626','#ff3399'])
+;
+
+/*links between nodes, nodes are specified by possition in the array which is zero indexed*/
+var vis = d3.select("body")
+    .append("svg:svg")
+      .attr("class", "stage")
+      .attr("width", w)
+      .attr("height", h);
+
+var force = d3.layout.force()
+    .nodes(nodes)
+    .links([])
+    .gravity(0.15)
+    .charge(function(d){
+    return -30*(d.relevance)
+    })
+	.friction(0.5)
+    .size([w, h]);
+
+/*var links = [
+  {source: nodes[0], target: nodes[2], width: 1,colour:"purple"},
+  {source: nodes[1], target: nodes[3], width: 1,colour:"red"},
+  {source: nodes[2], target: nodes[4], width: 2,colour:"blue"},
+  {source: nodes[1], target: nodes[2], width: 3,colour:"purple"},
+];
+var link = vis.selectAll(".link")
+  .data(links)
+  .enter().append("line")
+  .attr("class", "link")
+  .attr("stroke", function(d){
+    return (d.colour)
+    })
+    .attr("fill", "none")
+    .attr("stroke-width", function(d){
+      return 3*(d.width)
+      });
+*/ 
+var links = [
+];
+
+var link = vis.selectAll(".link")
+  .data(links)
+  .enter().append("line")
+  .attr("class", "link")
+  .attr("stroke", function(d){
+    return (d.colour)
+    })
+    .attr("fill", "none")
+    .attr("stroke-width", function(d){
+      return 3*(d.width)
+      });
+
+var node = vis.selectAll("circle.node")
+  .data(nodes)
+  .enter().append("g")
+  .attr("class", "node")
+
+  .on("mouseover", function(d) {
+    d3.select(this).select("text")
+    .transition()  
+    .duration(300)
+    .attr("opacity","1")
+    })
+
+  .on("mouseout", function(d,i) {
+    d3.select(this).select("text")
+  .transition()
+  .duration(300)
+  .attr("opacity","0")
+  })
+
+      .call(force.drag);
+
+
+    //CIRCLE
+    node.append("svg:circle")
+      .attr("cx", function(d) { return d.x; })
+      .attr("cy", function(d) { return d.y; })
+      .attr("r", function(d){
+      return rScale(d.relevance)
+    })
+      .attr("stroke", "white")
+      .attr("stroke-width", 5)
+      .attr("stroke-opacity",1)
+      .attr("fill", function(d){
+    return colorScale(d.IF)
+    })
+    
+    //TEXT
+    node.append("text")
+      .text(function(d, i) { return d.name; })
+      .attr("font-family",  "Sans-Serif")
+      .attr("fill","black")
+      .attr("opacity",0)
+/*the i condition is the position in the node or link array. begining is left of the node, end is right*/
+
+
+force.on("tick", function(e) {
+  node.attr("transform", function(d, i) {     
+        return "translate(" + d.x + "," + d.y + ")"; 
+    });
+    
+   link.attr("x1", function(d)   { return d.source.x; })
+       .attr("y1", function(d)   { return d.source.y; })
+       .attr("x2", function(d)   { return d.target.x; })
+       .attr("y2", function(d)   { return d.target.y; })
+})
+
+force.start();
+</script>
 <!--Twitter button-->
 <a href="https://twitter.com/suchalilnerd" class="twitter-follow-button" data-show-count="false">Follow @suchalilnerd</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>

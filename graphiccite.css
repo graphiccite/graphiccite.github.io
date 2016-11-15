@@ -1,9 +1,71 @@
 p{
-	font-size:1.3em;
+	font-size:1.2em;
 	font-family:"Lucida Console", "Tahoma", sans-serif;
 }
-
+h2{
+	color:#b2b2b2;
+}
 #photo_of_me{
 	width:60%;
 	margin-left:-1em;
+}
+
+.descript{
+    float: left;
+    padding:2%;
+    margin:2%;
+  width:40%
+}
+
+
+body, .stage {
+  background: ; 
+}
+div{
+  background-color:#d4d4d4;
+  font-family: sans-serif;
+  font-size:1.2em;
+  color:#4d4d4d;
+}
+#top{
+  width:110%;
+  height: 5%;
+  margin-left: -2%;
+  padding:1em;
+  padding-left:40%;
+  padding-right:10%;
+}
+#foot{
+  width:110%;
+  height: 5%;
+  margin-left: -2%;
+  padding:1em;
+  padding-left:10%;
+  clear:both;
+}
+/*start of speiciific css*/
+.descript{
+	background-color:#fff;
+    float: left;
+    padding:2%;
+    margin:2%;
+  width:25em;
+}
+p{
+  font-family:sans-serif;
+  padding-left: ;
+}
+text{
+  font-family:sans-serif;
+  font-size: 1.3em;
+}
+svg{
+  float:right;
+  position:fixed;
+}
+.twitter-follow-button{
+	float:right;
+	}
+a{
+text-decoration:none;
 }

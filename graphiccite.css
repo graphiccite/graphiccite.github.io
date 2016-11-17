@@ -39,6 +39,13 @@ body, .stage {
   padding-left:10%;
   clear:both;
 }
+#foot a{
+	text-decoration:underline;
+	}
+#foot a:hover{
+	color:#000;
+}
+
 /*start of speiciific css*/
 .descript{
   width:40%

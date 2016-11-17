@@ -1,6 +1,6 @@
 p{
 	font-size:1.2em;
-	font-family:"Lucida Console", "Tahoma", sans-serif;
+	font-family:sans-serif;
 }
 h2{
 	color:#b2b2b2;
@@ -10,22 +10,18 @@ h2{
 	margin-left:-1em;
 }
 
-.descript{
-    float: left;
-    padding:2%;
-    margin:2%;
-  width:40%
-}
-
-
 body, .stage {
   background: ; 
 }
-div{
-  background-color:#d4d4d4;
-  font-family: sans-serif;
-  font-size:1.2em;
-  color:#4d4d4d;
+#top{
+	font-family:sans-serif;
+	color:#4d4d4d;
+	  background-color:#d4d4d4;
+}
+#foot{
+	font-family:sans-serif;
+	color:#4d4d4d;
+	  background-color:#d4d4d4;
 }
 #top{
   width:110%;
@@ -45,16 +41,16 @@ div{
 }
 /*start of speiciific css*/
 .descript{
+  width:40%
+  color:#4d4d4d;
+  font-family: sans-serif;
 	background-color:#fff;
     float: left;
     padding:2%;
     margin:2%;
   width:25em;
 }
-p{
-  font-family:sans-serif;
-  padding-left: ;
-}
+
 text{
   font-family:sans-serif;
   font-size: 1.3em;

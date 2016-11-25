@@ -43,7 +43,7 @@ body, .stage {
 	text-decoration:underline;
 	}
 #foot a:hover{
-	color:#000;
+	color:#4d4d4d;
 }
 
 /*start of speiciific css*/
@@ -66,7 +66,7 @@ svg{
   float:right;
   position:fixed;
 }
-.twitter-follow-button{
+#top .twitter-follow-button{
 	float:right;
 	}
 a{

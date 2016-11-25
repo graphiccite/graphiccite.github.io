@@ -33,6 +33,7 @@ function myFunction() {
 <a href="https://twitter.com/suchalilnerd" class="twitter-follow-button" data-show-count="false">Follow @suchalilnerd</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 </div>
+
 <div class= "descript">
 <h1>Judging Journals</h1>
 <p>How do you judge a journal? The red circles are the journals I read most. Drag them around to see what they are. The bigger they are the bigger their impact factor. Click the black box next to the metric's name to fire the animation (If the animation freezes just click a circle to reboot).
@@ -47,16 +48,18 @@ Impact factor is the most common journal metric but it is not the only one. This
   <h2>Half-life</h2>
 <p>Half-life is a nice opposite to immediacy. How long is a journal's output is relevant? Counting backwards how many year’s worth of articles do you have to include before you have half of this year’s citations to ANY article from this journal. This is a cool idea but it's obviously biased against new journals. To counter this it's capped at 10 years.
 </p>
-<p>Most of the journals have high half-lives. Except the genetics journals, a rapidly developing field, and the open access journal PLOS one.
+<p>Most of the journals have high half-lives (right is high, left is low). Except the genetics journals, a rapidly developing field, and the open access journal PLOS one.
 </p>
-  <h2>Eigen factor</h2>
+  <h2>Eigenfactor</h2>
   <p>A complex algorithmic measure of how much time a scientist will spend reading that particular journal. It is similar to google's page rank algorithm. Calculated from the number of times it cites other journals and the number of times other journals cite it, both of which are weighted by the rank of the other journal. It has a weird chicken and egg vibe.
 </p>
-<p>Nature and PNAS, two major multidisciplinary journals come out top here. Surprisingly, side-by-side with PLOS one. That's because it's not weighted by number of articles.
+<p>High Eigenfactors at the top. Nature and PNAS, two major multidisciplinary journals come out top here. Surprisingly, side-by-side with PLOS one. That's because it's not weighted by number of articles.
 </p>
   <h2>Article Influence</h2>
   <p>This is based on the eigenfactor but weighted for number of articles. The larger this is the more times an article will cite and be cited on average.
 </p>
+<p>This shows us that PNAS and PLOS one's high Eigenfactor was partly because they publish so many articles.</p>
+<p>Now we know a little bit more about judging journals. Hopefully next time it comes to submitting it's a bit easier to choose where will give you best exposure. Although, in truth, you still have to convince them it's worth publishing...</p>
 </div>
 <script>
 var w = 900,
@@ -286,7 +289,7 @@ vis.append('text')
 .attr('x',35)
 .attr('y',370)
 vis.append('text')
-.text('Eigen factor')
+.text('Eigenfactor')
 .attr('x',35)
 .attr('y',395)
 vis.append('text')
@@ -294,8 +297,11 @@ vis.append('text')
 .attr('x',35)
 .attr('y',420)
 </script>
-<div id="foot">
-Check out <a href="https://thedenatured.github.io/">The Denatured </a>
+<div id="foot" class="w3-dark-grey w3-hover-black">
+
+<!--Twitter button-->
+<a href="https://twitter.com/suchalilnerd" class="twitter-follow-button" data-show-count="false">Follow @suchalilnerd</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 </div>
 </body>
 </html>

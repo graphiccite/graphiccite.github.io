@@ -6,12 +6,15 @@ from time import sleep
 #numberof results per page
 per_p = 100
 #doi prefix to limit results
+#10.1111 is the doi for molecular ecology, chage pre_doi and journal to what ever you want
 pre_doi = 10.1111
 journal = "Molecular Ecology"
 dataset = [];
 dataset2 = [];
 count = 0;
 #calculates the number of pages of data using per_p and the given doi prefix
+#the time frame it looks at is currently 1day (1d) just after citations in url
+#change time frame according to http://api.altmetric.com/docs/call_citations.html
 url = 'http://api.altmetric.com/v1/citations/1d?key=e4370450513b6942dfb303c6262460d9&num_results=%s&doi_prefix=%s' % (per_p,pre_doi)
 url_file = urlopen(url).read()
 jdata = json.loads(url_file)

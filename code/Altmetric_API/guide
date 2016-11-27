@@ -1,3 +1,4 @@
+Download all of these into a single folder.
 Two python files and the files they opporate one to creat a graph of altmetric scores. It is possible to chage the time frame and journal in the python file alt1d.py
 alt1d.py must be run first then sme.py
 

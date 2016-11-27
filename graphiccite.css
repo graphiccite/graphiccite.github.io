@@ -66,6 +66,16 @@ svg{
   float:right;
   position:fixed;
 }
+/*.hide is the class of div used in the altmetric api ap*/
+.hide{
+  float:right;
+  background-color: ;
+  width: 30%;
+  height: 10em;
+}
+.hide img{
+  margin-left:20%;
+}
 #top .twitter-follow-button{
 	float:right;
 	}

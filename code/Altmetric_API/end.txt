@@ -1,0 +1,228 @@
+;
+  
+  var d_ago_array = [];
+  var past_score_array = [];
+  var sci_array = [];
+  var pub_array = [];
+  var com_array = [];
+  var doc_array = [];
+  
+  for (var j = 0; j<dataset.length;j++){
+    for (var i = 0; i<dataset[j].history.length;i++){
+      var counter = i + j
+      d_ago_array[counter] = dataset[j].history[i].d_ago
+      past_score_array[counter] = dataset[j].history[i].past_score
+      sci_array[counter] = dataset[j].history[i].sci
+      pub_array[counter] = dataset[j].history[i].pub
+      com_array[counter] = dataset[j].history[i].com
+      doc_array[counter] = dataset[j].history[i].doc
+    }
+  }
+  
+  var xScale = d3.scale.pow()
+    .exponent(.3)
+    .domain([d3.min(d_ago_array), d3.max(d_ago_array)])
+    .range([w-p,p]);
+  
+  var yScale = d3.scale.linear()
+    .domain([d3.min(past_score_array), d3.max(past_score_array)])
+    .range([h-p,p])
+  
+  var sciScale = d3.scale.linear()
+    .domain([d3.min(sci_array),d3.max(sci_array)])
+    .range(['black','blue']);
+  
+  var pubScale = d3.scale.linear()
+    .domain([d3.min(pub_array),d3.max(pub_array)])
+    .range(['black','lime']);
+  
+  var comScale = d3.scale.linear()
+    .domain([d3.min(com_array),d3.max(com_array)])
+    .range(['black','red']);
+  
+  var docScale = d3.scale.linear()
+    .domain([d3.min(doc_array),d3.max(doc_array)])
+    .range(['black','#F700FF']);
+  
+   var lineFunction = d3.svg.line()
+   .x(function(d) { return xScale(d.d_ago);})
+   .y(function(d) { return yScale(d.past_score);})
+   .interpolate("linear");
+  
+  var svg = d3.select('body')
+    .append('svg')
+    .attr('width',w)
+    .attr('height',h);
+  
+  for (var loopi = 0; loopi<dataset.length; loopi++){
+    
+    var article = svg.selectAll('g')
+      .data(dataset[loopi].history)
+      .enter()
+      .append('g')
+    
+    var boxes = article.append('g')
+      .data(dataset[loopi].history)
+      .enter()
+      .append('g')
+        d3.select('body')
+        .append('div')
+          .attr('id', "box" + loopi)
+          .style("display","none")
+          .classed("hide", true)
+    
+    
+    var line = svg.append("path")
+      .attr("d", lineFunction(dataset[loopi].history))
+      .attr("stroke", 'black')
+      .attr("stroke-width", 2)
+      .attr("fill", "none");
+  
+    var circles = article.select('circle')
+      .data(dataset[loopi].history)
+      .enter()
+      .append('circle')
+      .attr('r', 10)
+      .attr('fill', function(d){
+          return sciScale(d.sci)
+      })
+      //.attr('stroke', 'black')
+      .attr('opacity', 0.6)
+      .attr('cx',function(d){
+         return xScale(d.d_ago)
+      })
+  	  .attr('cy',function(d){
+        return yScale(d.past_score)
+      })
+      .attr('class',function(d){
+        return "article"+loopi
+      })
+      .on('click', function(d){
+        //this animation is a little sikening, try changing the class rather than manipulating the div directly. OR rewrite so that it is a single div and the contents is changed
+        d3.selectAll(".hide")
+        .transition()
+        .duration(300)
+        .style('margin-top',"500px")
+        .style('opacity',0)
+        d3.selectAll(".hide")
+        .transition()
+        .delay(300)
+        .style("display","none")
+        d3.selectAll('#box'+d.count)
+        .style("display","inline-block")
+        .text(d.title)
+        .html('<a href=' + d.url + ' target="_blank"> <h3>' + d.title + '</h3></a>' + '<a href=' + d.details_url + ' target="_blank"><img src=' + d.image + '></a>')
+        .style('margin-top',"0em")
+        .style('margin-right','-5em')
+        d3.selectAll('#box'+d.count)
+        .transition()
+        .duration(550)
+        .style('opacity',1)
+        .style('margin-right',"5em")
+      })
+  /*    .on('mouseout', function(d){
+        d3.selectAll('#box'+d.count)
+        .style('display','none')
+      })
+  */
+  };
+  
+  /*for (var i = 1; i<dataset.length; i++){
+    testi = svg.append('rect')
+      .attr('height', 5)
+      .attr('width',5)
+      .attr('x', i * 20)
+  }
+  */
+  
+  
+  var xAxis = d3.svg.axis()
+    .scale(xScale)
+    .orient("bottom");
+  
+  var dayaxis = svg.append('g')
+    .attr('class', 'axis')
+    .attr("transform", "translate(0," + (h - p) + ")")
+    .call(xAxis)
+    .attr('opacity',1);
+  
+  svg.append('text')
+    .text('Days ago')
+    .attr('x', function(d){
+    return w/2
+  })
+    .attr('y',h-p+40)
+    .attr('text-anchor', 'middle')
+    .attr('class', 'lab');
+  
+  var yAxis = d3.svg.axis()
+    .scale(yScale)
+    .orient('left');
+  
+  var score_axis = svg.append('g')
+    .attr('class', 'axis')
+    .attr('transform', 'translate('+ p + ',0)')
+    .call(yAxis);
+  
+  var yLineText = svg.append('text')
+    .text('Score')
+    .attr('x',function(d){
+    return -(h/2)
+  })
+    .attr('y', p - 35)
+    .attr('transform', 'rotate(-90)')
+    .attr('text-anchor', 'middle')
+  
+  //These buttons are supposed to allow the user to switch between the defined colour schemes but for some reason the changes are only applied to one iteration of the loop, i.e. one articles set of points. I think it is the last one.
+  /*var sci_button = svg.append('rect')
+    .attr('x', 280)
+    .attr('y', 20)
+    .attr('height', 20)
+    .attr('width', 20)
+    .attr('fill', 'blue')
+    .on("click", function(){
+    circles.transition()
+    .attr('fill', function(d){
+      return sciScale(d.sci)
+    })
+  })
+  
+  var pub_button = svg.append('rect')
+    .attr('x', 305)
+    .attr('y', 20)
+    .attr('height', 20)
+    .attr('width', 20)
+    .attr('fill', 'lime')
+    .on("click", function(){
+    circles.transition()
+    .attr('fill',function(d){
+    return pubScale(d.pub)
+  })
+  })
+  var com_button = svg.append('rect')
+    .attr('x', 330)
+    .attr('y', 20)
+    .attr('height', 20)
+    .attr('width', 20)
+    .attr('fill', 'red')
+    .on("click", function(){
+    circles.transition()
+    .attr('fill',function(d){
+    return comScale(d.com)
+  })
+  })
+  var doc_button = svg.append('rect')
+    .attr('x', 355)
+    .attr('y', 20)
+    .attr('height', 20)
+    .attr('width', 20)
+    .attr('fill', '#F700FF')
+    .on("click", function(){
+    circles.transition()
+    .attr('fill',function(d){
+    return docScale(d.doc)
+  })
+  })*/
+</script>
+	</body>
+</html>

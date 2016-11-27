@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+	</head>
+	<body>
+		
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<style>
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: black;
+    shapde-rendering:crispEdges;
+  }
+  text{
+    font-family: sans-serif;
+  }
+  h3{
+    font_family: sans-serif;
+  }
+  .hide{
+    width:35%;
+    height:80%;
+    background-color: #d4d4d4;
+    opacity: 0;
+    margin-right: -5em;
+    padding:0.5em;
+  }
+  img{
+    margin-left:20%;
+  }
+  a{
+    color:black;
+    text-decoration:none;
+    font-family:sans-serif;
+  }
+  div{
+    float:right;
+    background-color: #4d4d4d;
+    width: 20%;
+    height: 10em;
+  }
+  
+  circle{
+    cursor:pointer;
+  }
+</style>
+
+<script>
+  var w = 500
+  var h = 500
+  var p = 50 //padding
+  
+  var dataset = 

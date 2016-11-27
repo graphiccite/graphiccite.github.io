@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title></title>
+	</head>
+	<body>
+		
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<style>
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: black;
+    shapde-rendering:crispEdges;
+  }
+  text{
+    font-family: sans-serif;
+  }
+  h3{
+    font_family: sans-serif;
+  }
+  .hide{
+    width:35%;
+    height:80%;
+    background-color: #d4d4d4;
+    opacity: 0;
+    margin-right: -5em;
+    padding:0.5em;
+  }
+  img{
+    margin-left:20%;
+  }
+  a{
+    color:black;
+    text-decoration:none;
+    font-family:sans-serif;
+  }
+  div{
+    float:right;
+    background-color: #4d4d4d;
+    width: 20%;
+    height: 10em;
+  }
+  
+  circle{
+    cursor:pointer;
+  }
+</style>
+
+<script>
+  var w = 500
+  var h = 500
+  var p = 50 //padding
+  
+  var dataset = [{'history': [{'sci': 7, 'd_ago': 0, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=268&types=mmmbtttf"', 'pub': 16, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13248201"', 'count': 0, 'title': 'The diversity of arthropods in homes across the United States as determined by environmental DNA analyses', 'url': '"http://dx.doi.org/10.1111/mec.13900"', 'doc': 2, 'past_score': 267.916, 'com': 2}, {'sci': 7, 'd_ago': 1, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=268&types=mmmbtttf"', 'pub': 16, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13248201"', 'count': 0, 'title': 'The diversity of arthropods in homes across the United States as determined by environmental DNA analyses', 'url': '"http://dx.doi.org/10.1111/mec.13900"', 'doc': 2, 'past_score': 267.916, 'com': 2}, {'sci': 7, 'd_ago': 2, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=268&types=mmmbtttf"', 'pub': 16, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13248201"', 'count': 0, 'title': 'The diversity of arthropods in homes across the United States as determined by environmental DNA analyses', 'url': '"http://dx.doi.org/10.1111/mec.13900"', 'doc': 2, 'past_score': 267.916, 'com': 2}, {'sci': 7, 'd_ago': 3, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=268&types=mmmbtttf"', 'pub': 16, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13248201"', 'count': 0, 'title': 'The diversity of arthropods in homes across the United States as determined by environmental DNA analyses', 'url': '"http://dx.doi.org/10.1111/mec.13900"', 'doc': 2, 'past_score': 267.916, 'com': 2}, {'sci': 7, 'd_ago': 4, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=268&types=mmmbtttf"', 'pub': 16, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13248201"', 'count': 0, 'title': 'The diversity of arthropods in homes across the United States as determined by environmental DNA analyses', 'url': '"http://dx.doi.org/10.1111/mec.13900"', 'doc': 2, 'past_score': 266.916, 'com': 2}, {'sci': 7, 'd_ago': 5, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=268&types=mmmbtttf"', 'pub': 16, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13248201"', 'count': 0, 'title': 'The diversity of arthropods in homes across the United States as determined by environmental DNA analyses', 'url': '"http://dx.doi.org/10.1111/mec.13900"', 'doc': 2, 'past_score': 254.916, 'com': 2}, {'sci': 7, 'd_ago': 6, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=268&types=mmmbtttf"', 'pub': 16, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13248201"', 'count': 0, 'title': 'The diversity of arthropods in homes across the United States as determined by environmental DNA analyses', 'url': '"http://dx.doi.org/10.1111/mec.13900"', 'doc': 2, 'past_score': 254.916, 'com': 2}, {'sci': 7, 'd_ago': 7, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=268&types=mmmbtttf"', 'pub': 16, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13248201"', 'count': 0, 'title': 'The diversity of arthropods in homes across the United States as determined by environmental DNA analyses', 'url': '"http://dx.doi.org/10.1111/mec.13900"', 'doc': 2, 'past_score': 254.916, 'com': 2}, {'sci': 7, 'd_ago': 30, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=268&types=mmmbtttf"', 'pub': 16, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13248201"', 'count': 0, 'title': 'The diversity of arthropods in homes across the United States as determined by environmental DNA analyses', 'url': '"http://dx.doi.org/10.1111/mec.13900"', 'doc': 2, 'past_score': 0.0, 'com': 2}, {'sci': 7, 'd_ago': 90, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=268&types=mmmbtttf"', 'pub': 16, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13248201"', 'count': 0, 'title': 'The diversity of arthropods in homes across the United States as determined by environmental DNA analyses', 'url': '"http://dx.doi.org/10.1111/mec.13900"', 'doc': 2, 'past_score': 0.0, 'com': 2}]}, {'history': [{'sci': 11, 'd_ago': 0, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=13&types=tttttttt"', 'pub': 6, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13843415"', 'count': 1, 'title': 'Local adaptation at higher trophic levels: Contrasting hyperparasite-pathogen infection dynamics in the field and laboratory', 'url': '"http://dx.doi.org/10.1111/mec.13928"', 'doc': 1, 'past_score': 12.25, 'com': 0}, {'sci': 11, 'd_ago': 1, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=13&types=tttttttt"', 'pub': 6, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13843415"', 'count': 1, 'title': 'Local adaptation at higher trophic levels: Contrasting hyperparasite-pathogen infection dynamics in the field and laboratory', 'url': '"http://dx.doi.org/10.1111/mec.13928"', 'doc': 1, 'past_score': 12.25, 'com': 0}, {'sci': 11, 'd_ago': 2, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=13&types=tttttttt"', 'pub': 6, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13843415"', 'count': 1, 'title': 'Local adaptation at higher trophic levels: Contrasting hyperparasite-pathogen infection dynamics in the field and laboratory', 'url': '"http://dx.doi.org/10.1111/mec.13928"', 'doc': 1, 'past_score': 12.25, 'com': 0}, {'sci': 11, 'd_ago': 3, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=13&types=tttttttt"', 'pub': 6, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13843415"', 'count': 1, 'title': 'Local adaptation at higher trophic levels: Contrasting hyperparasite-pathogen infection dynamics in the field and laboratory', 'url': '"http://dx.doi.org/10.1111/mec.13928"', 'doc': 1, 'past_score': 12.25, 'com': 0}, {'sci': 11, 'd_ago': 4, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=13&types=tttttttt"', 'pub': 6, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13843415"', 'count': 1, 'title': 'Local adaptation at higher trophic levels: Contrasting hyperparasite-pathogen infection dynamics in the field and laboratory', 'url': '"http://dx.doi.org/10.1111/mec.13928"', 'doc': 1, 'past_score': 12.25, 'com': 0}, {'sci': 11, 'd_ago': 5, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=13&types=tttttttt"', 'pub': 6, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13843415"', 'count': 1, 'title': 'Local adaptation at higher trophic levels: Contrasting hyperparasite-pathogen infection dynamics in the field and laboratory', 'url': '"http://dx.doi.org/10.1111/mec.13928"', 'doc': 1, 'past_score': 10.05, 'com': 0}, {'sci': 11, 'd_ago': 6, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=13&types=tttttttt"', 'pub': 6, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13843415"', 'count': 1, 'title': 'Local adaptation at higher trophic levels: Contrasting hyperparasite-pathogen infection dynamics in the field and laboratory', 'url': '"http://dx.doi.org/10.1111/mec.13928"', 'doc': 1, 'past_score': 5.0, 'com': 0}, {'sci': 11, 'd_ago': 7, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=13&types=tttttttt"', 'pub': 6, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13843415"', 'count': 1, 'title': 'Local adaptation at higher trophic levels: Contrasting hyperparasite-pathogen infection dynamics in the field and laboratory', 'url': '"http://dx.doi.org/10.1111/mec.13928"', 'doc': 1, 'past_score': 0.0, 'com': 0}, {'sci': 11, 'd_ago': 30, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=13&types=tttttttt"', 'pub': 6, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13843415"', 'count': 1, 'title': 'Local adaptation at higher trophic levels: Contrasting hyperparasite-pathogen infection dynamics in the field and laboratory', 'url': '"http://dx.doi.org/10.1111/mec.13928"', 'doc': 1, 'past_score': 0.0, 'com': 0}, {'sci': 11, 'd_ago': 90, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=13&types=tttttttt"', 'pub': 6, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13843415"', 'count': 1, 'title': 'Local adaptation at higher trophic levels: Contrasting hyperparasite-pathogen infection dynamics in the field and laboratory', 'url': '"http://dx.doi.org/10.1111/mec.13928"', 'doc': 1, 'past_score': 0.0, 'com': 0}]}, {'history': [{'sci': 5, 'd_ago': 0, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=27&types=mbtttttt"', 'pub': 2, 'details_url': '"http://www.altmetric.com/details.php?citation_id=2063697"', 'count': 2, 'title': 'Herbarium specimens reveal a historical shift in phylogeographic structure of common ragweed during native range disturbance', 'url': '"http://dx.doi.org/10.1111/mec.12675"', 'doc': 0, 'past_score': 26.4, 'com': 1}, {'sci': 5, 'd_ago': 1, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=27&types=mbtttttt"', 'pub': 2, 'details_url': '"http://www.altmetric.com/details.php?citation_id=2063697"', 'count': 2, 'title': 'Herbarium specimens reveal a historical shift in phylogeographic structure of common ragweed during native range disturbance', 'url': '"http://dx.doi.org/10.1111/mec.12675"', 'doc': 0, 'past_score': 26.4, 'com': 1}, {'sci': 5, 'd_ago': 2, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=27&types=mbtttttt"', 'pub': 2, 'details_url': '"http://www.altmetric.com/details.php?citation_id=2063697"', 'count': 2, 'title': 'Herbarium specimens reveal a historical shift in phylogeographic structure of common ragweed during native range disturbance', 'url': '"http://dx.doi.org/10.1111/mec.12675"', 'doc': 0, 'past_score': 19.4, 'com': 1}, {'sci': 5, 'd_ago': 3, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=27&types=mbtttttt"', 'pub': 2, 'details_url': '"http://www.altmetric.com/details.php?citation_id=2063697"', 'count': 2, 'title': 'Herbarium specimens reveal a historical shift in phylogeographic structure of common ragweed during native range disturbance', 'url': '"http://dx.doi.org/10.1111/mec.12675"', 'doc': 0, 'past_score': 19.4, 'com': 1}, {'sci': 5, 'd_ago': 4, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=27&types=mbtttttt"', 'pub': 2, 'details_url': '"http://www.altmetric.com/details.php?citation_id=2063697"', 'count': 2, 'title': 'Herbarium specimens reveal a historical shift in phylogeographic structure of common ragweed during native range disturbance', 'url': '"http://dx.doi.org/10.1111/mec.12675"', 'doc': 0, 'past_score': 19.4, 'com': 1}, {'sci': 5, 'd_ago': 5, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=27&types=mbtttttt"', 'pub': 2, 'details_url': '"http://www.altmetric.com/details.php?citation_id=2063697"', 'count': 2, 'title': 'Herbarium specimens reveal a historical shift in phylogeographic structure of common ragweed during native range disturbance', 'url': '"http://dx.doi.org/10.1111/mec.12675"', 'doc': 0, 'past_score': 19.4, 'com': 1}, {'sci': 5, 'd_ago': 6, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=27&types=mbtttttt"', 'pub': 2, 'details_url': '"http://www.altmetric.com/details.php?citation_id=2063697"', 'count': 2, 'title': 'Herbarium specimens reveal a historical shift in phylogeographic structure of common ragweed during native range disturbance', 'url': '"http://dx.doi.org/10.1111/mec.12675"', 'doc': 0, 'past_score': 14.399999999999999, 'com': 1}, {'sci': 5, 'd_ago': 7, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=27&types=mbtttttt"', 'pub': 2, 'details_url': '"http://www.altmetric.com/details.php?citation_id=2063697"', 'count': 2, 'title': 'Herbarium specimens reveal a historical shift in phylogeographic structure of common ragweed during native range disturbance', 'url': '"http://dx.doi.org/10.1111/mec.12675"', 'doc': 0, 'past_score': 14.399999999999999, 'com': 1}, {'sci': 5, 'd_ago': 30, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=27&types=mbtttttt"', 'pub': 2, 'details_url': '"http://www.altmetric.com/details.php?citation_id=2063697"', 'count': 2, 'title': 'Herbarium specimens reveal a historical shift in phylogeographic structure of common ragweed during native range disturbance', 'url': '"http://dx.doi.org/10.1111/mec.12675"', 'doc': 0, 'past_score': 14.399999999999999, 'com': 1}, {'sci': 5, 'd_ago': 90, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=27&types=mbtttttt"', 'pub': 2, 'details_url': '"http://www.altmetric.com/details.php?citation_id=2063697"', 'count': 2, 'title': 'Herbarium specimens reveal a historical shift in phylogeographic structure of common ragweed during native range disturbance', 'url': '"http://dx.doi.org/10.1111/mec.12675"', 'doc': 0, 'past_score': 14.399999999999999, 'com': 1}]}, {'history': [{'sci': 4, 'd_ago': 0, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=18&types=bbtttttt"', 'pub': 11, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13443940"', 'count': 3, 'title': 'Coevolutionary dynamics between a defensive microbe and a pathogen driven by fluctuating selection', 'url': '"http://dx.doi.org/10.1111/mec.13906"', 'doc': 0, 'past_score': 17.18, 'com': 0}, {'sci': 4, 'd_ago': 1, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=18&types=bbtttttt"', 'pub': 11, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13443940"', 'count': 3, 'title': 'Coevolutionary dynamics between a defensive microbe and a pathogen driven by fluctuating selection', 'url': '"http://dx.doi.org/10.1111/mec.13906"', 'doc': 0, 'past_score': 17.18, 'com': 0}, {'sci': 4, 'd_ago': 2, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=18&types=bbtttttt"', 'pub': 11, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13443940"', 'count': 3, 'title': 'Coevolutionary dynamics between a defensive microbe and a pathogen driven by fluctuating selection', 'url': '"http://dx.doi.org/10.1111/mec.13906"', 'doc': 0, 'past_score': 17.18, 'com': 0}, {'sci': 4, 'd_ago': 3, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=18&types=bbtttttt"', 'pub': 11, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13443940"', 'count': 3, 'title': 'Coevolutionary dynamics between a defensive microbe and a pathogen driven by fluctuating selection', 'url': '"http://dx.doi.org/10.1111/mec.13906"', 'doc': 0, 'past_score': 17.18, 'com': 0}, {'sci': 4, 'd_ago': 4, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=18&types=bbtttttt"', 'pub': 11, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13443940"', 'count': 3, 'title': 'Coevolutionary dynamics between a defensive microbe and a pathogen driven by fluctuating selection', 'url': '"http://dx.doi.org/10.1111/mec.13906"', 'doc': 0, 'past_score': 17.18, 'com': 0}, {'sci': 4, 'd_ago': 5, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=18&types=bbtttttt"', 'pub': 11, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13443940"', 'count': 3, 'title': 'Coevolutionary dynamics between a defensive microbe and a pathogen driven by fluctuating selection', 'url': '"http://dx.doi.org/10.1111/mec.13906"', 'doc': 0, 'past_score': 17.18, 'com': 0}, {'sci': 4, 'd_ago': 6, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=18&types=bbtttttt"', 'pub': 11, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13443940"', 'count': 3, 'title': 'Coevolutionary dynamics between a defensive microbe and a pathogen driven by fluctuating selection', 'url': '"http://dx.doi.org/10.1111/mec.13906"', 'doc': 0, 'past_score': 9.85, 'com': 0}, {'sci': 4, 'd_ago': 7, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=18&types=bbtttttt"', 'pub': 11, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13443940"', 'count': 3, 'title': 'Coevolutionary dynamics between a defensive microbe and a pathogen driven by fluctuating selection', 'url': '"http://dx.doi.org/10.1111/mec.13906"', 'doc': 0, 'past_score': 9.85, 'com': 0}, {'sci': 4, 'd_ago': 30, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=18&types=bbtttttt"', 'pub': 11, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13443940"', 'count': 3, 'title': 'Coevolutionary dynamics between a defensive microbe and a pathogen driven by fluctuating selection', 'url': '"http://dx.doi.org/10.1111/mec.13906"', 'doc': 0, 'past_score': 0.0, 'com': 0}, {'sci': 4, 'd_ago': 90, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=18&types=bbtttttt"', 'pub': 11, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13443940"', 'count': 3, 'title': 'Coevolutionary dynamics between a defensive microbe and a pathogen driven by fluctuating selection', 'url': '"http://dx.doi.org/10.1111/mec.13906"', 'doc': 0, 'past_score': 0.0, 'com': 0}]}, {'history': [{'sci': 5, 'd_ago': 0, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=15&types=tttttttf"', 'pub': 15, 'details_url': '"http://www.altmetric.com/details.php?citation_id=12430811"', 'count': 4, 'title': 'Telomere length reflects reproductive effort indicated by corticosterone levels in a long-lived seabird.', 'url': '"http://dx.doi.org/10.1111/mec.13874"', 'doc': 0, 'past_score': 15, 'com': 2}, {'sci': 5, 'd_ago': 1, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=15&types=tttttttf"', 'pub': 15, 'details_url': '"http://www.altmetric.com/details.php?citation_id=12430811"', 'count': 4, 'title': 'Telomere length reflects reproductive effort indicated by corticosterone levels in a long-lived seabird.', 'url': '"http://dx.doi.org/10.1111/mec.13874"', 'doc': 0, 'past_score': 15, 'com': 2}, {'sci': 5, 'd_ago': 2, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=15&types=tttttttf"', 'pub': 15, 'details_url': '"http://www.altmetric.com/details.php?citation_id=12430811"', 'count': 4, 'title': 'Telomere length reflects reproductive effort indicated by corticosterone levels in a long-lived seabird.', 'url': '"http://dx.doi.org/10.1111/mec.13874"', 'doc': 0, 'past_score': 13.25, 'com': 2}, {'sci': 5, 'd_ago': 3, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=15&types=tttttttf"', 'pub': 15, 'details_url': '"http://www.altmetric.com/details.php?citation_id=12430811"', 'count': 4, 'title': 'Telomere length reflects reproductive effort indicated by corticosterone levels in a long-lived seabird.', 'url': '"http://dx.doi.org/10.1111/mec.13874"', 'doc': 0, 'past_score': 8.35, 'com': 2}, {'sci': 5, 'd_ago': 4, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=15&types=tttttttf"', 'pub': 15, 'details_url': '"http://www.altmetric.com/details.php?citation_id=12430811"', 'count': 4, 'title': 'Telomere length reflects reproductive effort indicated by corticosterone levels in a long-lived seabird.', 'url': '"http://dx.doi.org/10.1111/mec.13874"', 'doc': 0, 'past_score': 7.85, 'com': 2}, {'sci': 5, 'd_ago': 5, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=15&types=tttttttf"', 'pub': 15, 'details_url': '"http://www.altmetric.com/details.php?citation_id=12430811"', 'count': 4, 'title': 'Telomere length reflects reproductive effort indicated by corticosterone levels in a long-lived seabird.', 'url': '"http://dx.doi.org/10.1111/mec.13874"', 'doc': 0, 'past_score': 7.85, 'com': 2}, {'sci': 5, 'd_ago': 6, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=15&types=tttttttf"', 'pub': 15, 'details_url': '"http://www.altmetric.com/details.php?citation_id=12430811"', 'count': 4, 'title': 'Telomere length reflects reproductive effort indicated by corticosterone levels in a long-lived seabird.', 'url': '"http://dx.doi.org/10.1111/mec.13874"', 'doc': 0, 'past_score': 7.85, 'com': 2}, {'sci': 5, 'd_ago': 7, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=15&types=tttttttf"', 'pub': 15, 'details_url': '"http://www.altmetric.com/details.php?citation_id=12430811"', 'count': 4, 'title': 'Telomere length reflects reproductive effort indicated by corticosterone levels in a long-lived seabird.', 'url': '"http://dx.doi.org/10.1111/mec.13874"', 'doc': 0, 'past_score': 7.85, 'com': 2}, {'sci': 5, 'd_ago': 30, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=15&types=tttttttf"', 'pub': 15, 'details_url': '"http://www.altmetric.com/details.php?citation_id=12430811"', 'count': 4, 'title': 'Telomere length reflects reproductive effort indicated by corticosterone levels in a long-lived seabird.', 'url': '"http://dx.doi.org/10.1111/mec.13874"', 'doc': 0, 'past_score': 1.0999999999999996, 'com': 2}, {'sci': 5, 'd_ago': 90, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=15&types=tttttttf"', 'pub': 15, 'details_url': '"http://www.altmetric.com/details.php?citation_id=12430811"', 'count': 4, 'title': 'Telomere length reflects reproductive effort indicated by corticosterone levels in a long-lived seabird.', 'url': '"http://dx.doi.org/10.1111/mec.13874"', 'doc': 0, 'past_score': 0, 'com': 2}]}, {'history': [{'sci': 5, 'd_ago': 0, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=7&types=tttttttt"', 'pub': 4, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13879114"', 'count': 5, 'title': '\\n              Introgression and selection shaped the evolutionary history of sympatric sister-species of coral reef fishes (genus:\\n              Haemulon\\n              )\\n            ', 'url': '"http://dx.doi.org/10.1111/mec.13937"', 'doc': 0, 'past_score': 6.4, 'com': 1}, {'sci': 5, 'd_ago': 1, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=7&types=tttttttt"', 'pub': 4, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13879114"', 'count': 5, 'title': '\\n              Introgression and selection shaped the evolutionary history of sympatric sister-species of coral reef fishes (genus:\\n              Haemulon\\n              )\\n            ', 'url': '"http://dx.doi.org/10.1111/mec.13937"', 'doc': 0, 'past_score': 0.5, 'com': 1}, {'sci': 5, 'd_ago': 2, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=7&types=tttttttt"', 'pub': 4, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13879114"', 'count': 5, 'title': '\\n              Introgression and selection shaped the evolutionary history of sympatric sister-species of coral reef fishes (genus:\\n              Haemulon\\n              )\\n            ', 'url': '"http://dx.doi.org/10.1111/mec.13937"', 'doc': 0, 'past_score': 0.5, 'com': 1}, {'sci': 5, 'd_ago': 3, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=7&types=tttttttt"', 'pub': 4, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13879114"', 'count': 5, 'title': '\\n              Introgression and selection shaped the evolutionary history of sympatric sister-species of coral reef fishes (genus:\\n              Haemulon\\n              )\\n            ', 'url': '"http://dx.doi.org/10.1111/mec.13937"', 'doc': 0, 'past_score': 0.5, 'com': 1}, {'sci': 5, 'd_ago': 4, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=7&types=tttttttt"', 'pub': 4, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13879114"', 'count': 5, 'title': '\\n              Introgression and selection shaped the evolutionary history of sympatric sister-species of coral reef fishes (genus:\\n              Haemulon\\n              )\\n            ', 'url': '"http://dx.doi.org/10.1111/mec.13937"', 'doc': 0, 'past_score': 0.5, 'com': 1}, {'sci': 5, 'd_ago': 5, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=7&types=tttttttt"', 'pub': 4, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13879114"', 'count': 5, 'title': '\\n              Introgression and selection shaped the evolutionary history of sympatric sister-species of coral reef fishes (genus:\\n              Haemulon\\n              )\\n            ', 'url': '"http://dx.doi.org/10.1111/mec.13937"', 'doc': 0, 'past_score': 0.0, 'com': 1}, {'sci': 5, 'd_ago': 6, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=7&types=tttttttt"', 'pub': 4, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13879114"', 'count': 5, 'title': '\\n              Introgression and selection shaped the evolutionary history of sympatric sister-species of coral reef fishes (genus:\\n              Haemulon\\n              )\\n            ', 'url': '"http://dx.doi.org/10.1111/mec.13937"', 'doc': 0, 'past_score': 0.0, 'com': 1}, {'sci': 5, 'd_ago': 7, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=7&types=tttttttt"', 'pub': 4, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13879114"', 'count': 5, 'title': '\\n              Introgression and selection shaped the evolutionary history of sympatric sister-species of coral reef fishes (genus:\\n              Haemulon\\n              )\\n            ', 'url': '"http://dx.doi.org/10.1111/mec.13937"', 'doc': 0, 'past_score': 0.0, 'com': 1}, {'sci': 5, 'd_ago': 30, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=7&types=tttttttt"', 'pub': 4, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13879114"', 'count': 5, 'title': '\\n              Introgression and selection shaped the evolutionary history of sympatric sister-species of coral reef fishes (genus:\\n              Haemulon\\n              )\\n            ', 'url': '"http://dx.doi.org/10.1111/mec.13937"', 'doc': 0, 'past_score': 0.0, 'com': 1}, {'sci': 5, 'd_ago': 90, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=7&types=tttttttt"', 'pub': 4, 'details_url': '"http://www.altmetric.com/details.php?citation_id=13879114"', 'count': 5, 'title': '\\n              Introgression and selection shaped the evolutionary history of sympatric sister-species of coral reef fishes (genus:\\n              Haemulon\\n              )\\n            ', 'url': '"http://dx.doi.org/10.1111/mec.13937"', 'doc': 0, 'past_score': 0.0, 'com': 1}]}, {'history': [{'sci': 9, 'd_ago': 0, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=11&types=tttttttt"', 'pub': 7, 'details_url': '"http://www.altmetric.com/details.php?citation_id=12586794"', 'count': 6, 'title': 'Into the Andes: multiple independent colonizations drive montane diversity in the Neotropical clearwing butterflies Godyridina.', 'url': '"http://dx.doi.org/10.1111/mec.13773"', 'doc': 0, 'past_score': 10.9, 'com': 1}, {'sci': 9, 'd_ago': 1, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=11&types=tttttttt"', 'pub': 7, 'details_url': '"http://www.altmetric.com/details.php?citation_id=12586794"', 'count': 6, 'title': 'Into the Andes: multiple independent colonizations drive montane diversity in the Neotropical clearwing butterflies Godyridina.', 'url': '"http://dx.doi.org/10.1111/mec.13773"', 'doc': 0, 'past_score': 10.9, 'com': 1}, {'sci': 9, 'd_ago': 2, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=11&types=tttttttt"', 'pub': 7, 'details_url': '"http://www.altmetric.com/details.php?citation_id=12586794"', 'count': 6, 'title': 'Into the Andes: multiple independent colonizations drive montane diversity in the Neotropical clearwing butterflies Godyridina.', 'url': '"http://dx.doi.org/10.1111/mec.13773"', 'doc': 0, 'past_score': 10.9, 'com': 1}, {'sci': 9, 'd_ago': 3, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=11&types=tttttttt"', 'pub': 7, 'details_url': '"http://www.altmetric.com/details.php?citation_id=12586794"', 'count': 6, 'title': 'Into the Andes: multiple independent colonizations drive montane diversity in the Neotropical clearwing butterflies Godyridina.', 'url': '"http://dx.doi.org/10.1111/mec.13773"', 'doc': 0, 'past_score': 10.9, 'com': 1}, {'sci': 9, 'd_ago': 4, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=11&types=tttttttt"', 'pub': 7, 'details_url': '"http://www.altmetric.com/details.php?citation_id=12586794"', 'count': 6, 'title': 'Into the Andes: multiple independent colonizations drive montane diversity in the Neotropical clearwing butterflies Godyridina.', 'url': '"http://dx.doi.org/10.1111/mec.13773"', 'doc': 0, 'past_score': 10.9, 'com': 1}, {'sci': 9, 'd_ago': 5, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=11&types=tttttttt"', 'pub': 7, 'details_url': '"http://www.altmetric.com/details.php?citation_id=12586794"', 'count': 6, 'title': 'Into the Andes: multiple independent colonizations drive montane diversity in the Neotropical clearwing butterflies Godyridina.', 'url': '"http://dx.doi.org/10.1111/mec.13773"', 'doc': 0, 'past_score': 10.9, 'com': 1}, {'sci': 9, 'd_ago': 6, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=11&types=tttttttt"', 'pub': 7, 'details_url': '"http://www.altmetric.com/details.php?citation_id=12586794"', 'count': 6, 'title': 'Into the Andes: multiple independent colonizations drive montane diversity in the Neotropical clearwing butterflies Godyridina.', 'url': '"http://dx.doi.org/10.1111/mec.13773"', 'doc': 0, 'past_score': 9.05, 'com': 1}, {'sci': 9, 'd_ago': 7, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=11&types=tttttttt"', 'pub': 7, 'details_url': '"http://www.altmetric.com/details.php?citation_id=12586794"', 'count': 6, 'title': 'Into the Andes: multiple independent colonizations drive montane diversity in the Neotropical clearwing butterflies Godyridina.', 'url': '"http://dx.doi.org/10.1111/mec.13773"', 'doc': 0, 'past_score': 4.75, 'com': 1}, {'sci': 9, 'd_ago': 30, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=11&types=tttttttt"', 'pub': 7, 'details_url': '"http://www.altmetric.com/details.php?citation_id=12586794"', 'count': 6, 'title': 'Into the Andes: multiple independent colonizations drive montane diversity in the Neotropical clearwing butterflies Godyridina.', 'url': '"http://dx.doi.org/10.1111/mec.13773"', 'doc': 0, 'past_score': 4.75, 'com': 1}, {'sci': 9, 'd_ago': 90, 'image': '"https://altmetric-badges.a.ssl.fastly.net/?size=180&score=11&types=tttttttt"', 'pub': 7, 'details_url': '"http://www.altmetric.com/details.php?citation_id=12586794"', 'count': 6, 'title': 'Into the Andes: multiple independent colonizations drive montane diversity in the Neotropical clearwing butterflies Godyridina.', 'url': '"http://dx.doi.org/10.1111/mec.13773"', 'doc': 0, 'past_score': 0.0, 'com': 1}]}];
+  
+  var d_ago_array = [];
+  var past_score_array = [];
+  var sci_array = [];
+  var pub_array = [];
+  var com_array = [];
+  var doc_array = [];
+  
+  for (var j = 0; j<dataset.length;j++){
+    for (var i = 0; i<dataset[j].history.length;i++){
+      var counter = i + j
+      d_ago_array[counter] = dataset[j].history[i].d_ago
+      past_score_array[counter] = dataset[j].history[i].past_score
+      sci_array[counter] = dataset[j].history[i].sci
+      pub_array[counter] = dataset[j].history[i].pub
+      com_array[counter] = dataset[j].history[i].com
+      doc_array[counter] = dataset[j].history[i].doc
+    }
+  }
+  
+  var xScale = d3.scale.pow()
+    .exponent(.3)
+    .domain([d3.min(d_ago_array), d3.max(d_ago_array)])
+    .range([w-p,p]);
+  
+  var yScale = d3.scale.pow()
+    .exponent(.3)
+    .domain([d3.min(past_score_array), d3.max(past_score_array)])
+    .range([h-p,p])
+  
+  var sciScale = d3.scale.linear()
+    .domain([d3.min(sci_array),d3.max(sci_array)])
+    .range(['black','blue']);
+  
+  var pubScale = d3.scale.linear()
+    .domain([d3.min(pub_array),d3.max(pub_array)])
+    .range(['black','lime']);
+  
+  var comScale = d3.scale.linear()
+    .domain([d3.min(com_array),d3.max(com_array)])
+    .range(['black','red']);
+  
+  var docScale = d3.scale.linear()
+    .domain([d3.min(doc_array),d3.max(doc_array)])
+    .range(['black','#F700FF']);
+  
+   var lineFunction = d3.svg.line()
+   .x(function(d) { return xScale(d.d_ago);})
+   .y(function(d) { return yScale(d.past_score);})
+   .interpolate("linear");
+  
+  var svg = d3.select('body')
+    .append('svg')
+    .attr('width',w)
+    .attr('height',h);
+  
+  for (var loopi = 0; loopi<dataset.length; loopi++){
+    
+    var article = svg.selectAll('g')
+      .data(dataset[loopi].history)
+      .enter()
+      .append('g')
+    
+    var boxes = article.append('g')
+      .data(dataset[loopi].history)
+      .enter()
+      .append('g')
+        d3.select('body')
+        .append('div')
+          .attr('id', "box" + loopi)
+          .style("display","none")
+          .classed("hide", true)
+    
+    
+    var line = svg.append("path")
+      .attr("d", lineFunction(dataset[loopi].history))
+      .attr("stroke", 'black')
+      .attr("stroke-width", 2)
+      .attr("fill", "none");
+  
+    var circles = article.select('circle')
+      .data(dataset[loopi].history)
+      .enter()
+      .append('circle')
+      .attr('r', 10)
+      .attr('fill', function(d){
+          return sciScale(d.sci)
+      })
+      //.attr('stroke', 'black')
+      .attr('opacity', 0.6)
+      .attr('cx',function(d){
+         return xScale(d.d_ago)
+      })
+  	  .attr('cy',function(d){
+        return yScale(d.past_score)
+      })
+      .attr('class',function(d){
+        return "article"+loopi
+      })
+      .on('click', function(d){
+        //this animation is a little sikening, try changing the class rather than manipulating the div directly. OR rewrite so that it is a single div and the contents is changed
+        d3.selectAll(".hide")
+        .transition()
+        .duration(300)
+        .style('margin-top',"500px")
+        .style('opacity',0)
+        d3.selectAll(".hide")
+        .transition()
+        .delay(300)
+        .style("display","none")
+        d3.selectAll('#box'+d.count)
+        .style("display","inline-block")
+        .text(d.title)
+        .html('<a href=' + d.url + ' target="_blank"> <h3>' + d.title + '</h3></a>' + '<a href=' + d.details_url + ' target="_blank"><img src=' + d.image + '></a>')
+        .style('margin-top',"0em")
+        .style('margin-right','-5em')
+        d3.selectAll('#box'+d.count)
+        .transition()
+        .duration(550)
+        .style('opacity',1)
+        .style('margin-right',"5em")
+      })
+  /*    .on('mouseout', function(d){
+        d3.selectAll('#box'+d.count)
+        .style('display','none')
+      })
+  */
+  };
+  
+  /*for (var i = 1; i<dataset.length; i++){
+    testi = svg.append('rect')
+      .attr('height', 5)
+      .attr('width',5)
+      .attr('x', i * 20)
+  }
+  */
+  
+  
+  var xAxis = d3.svg.axis()
+    .scale(xScale)
+    .orient("bottom");
+  
+  var dayaxis = svg.append('g')
+    .attr('class', 'axis')
+    .attr("transform", "translate(0," + (h - p) + ")")
+    .call(xAxis)
+    .attr('opacity',1);
+  
+  svg.append('text')
+    .text('Days ago')
+    .attr('x', function(d){
+    return w/2
+  })
+    .attr('y',h-p+40)
+    .attr('text-anchor', 'middle')
+    .attr('class', 'lab');
+  
+  var yAxis = d3.svg.axis()
+    .scale(yScale)
+    .orient('left');
+  
+  var score_axis = svg.append('g')
+    .attr('class', 'axis')
+    .attr('transform', 'translate('+ p + ',0)')
+    .call(yAxis);
+  
+  var yLineText = svg.append('text')
+    .text('Score')
+    .attr('x',function(d){
+    return -(h/2)
+  })
+    .attr('y', p - 35)
+    .attr('transform', 'rotate(-90)')
+    .attr('text-anchor', 'middle')
+  
+  //These buttons are supposed to allow the user to switch between the defined colour schemes but for some reason the changes are only applied to one iteration of the loop, i.e. one articles set of points. I think it is the last one.
+  /*var sci_button = svg.append('rect')
+    .attr('x', 280)
+    .attr('y', 20)
+    .attr('height', 20)
+    .attr('width', 20)
+    .attr('fill', 'blue')
+    .on("click", function(){
+    circles.transition()
+    .attr('fill', function(d){
+      return sciScale(d.sci)
+    })
+  })
+  
+  var pub_button = svg.append('rect')
+    .attr('x', 305)
+    .attr('y', 20)
+    .attr('height', 20)
+    .attr('width', 20)
+    .attr('fill', 'lime')
+    .on("click", function(){
+    circles.transition()
+    .attr('fill',function(d){
+    return pubScale(d.pub)
+  })
+  })
+  var com_button = svg.append('rect')
+    .attr('x', 330)
+    .attr('y', 20)
+    .attr('height', 20)
+    .attr('width', 20)
+    .attr('fill', 'red')
+    .on("click", function(){
+    circles.transition()
+    .attr('fill',function(d){
+    return comScale(d.com)
+  })
+  })
+  var doc_button = svg.append('rect')
+    .attr('x', 355)
+    .attr('y', 20)
+    .attr('height', 20)
+    .attr('width', 20)
+    .attr('fill', '#F700FF')
+    .on("click", function(){
+    circles.transition()
+    .attr('fill',function(d){
+    return docScale(d.doc)
+  })
+  })*/
+</script>
+	</body>
+</html>

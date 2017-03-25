@@ -85,6 +85,6 @@ text-decoration:none;
 .textlink{
 	color:#4fbab5;
 }
-.button{
+.button rect{
 	cursor:pointer;
 	}

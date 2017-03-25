@@ -34,12 +34,22 @@ function myFunction() {
 <a href="https://twitter.com/suchalilnerd" class="twitter-follow-button" data-show-count="false">Follow @suchalilnerd</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 </div>
+<!--style tag just for this article to get the axis labels to fit-->
+<style>
+.axis text{
+  font-family: sans-serif;
+  font-size: 11px;
+}
+
+</style>
 
 <div class= "descript">
-<h1>The Boat Race</h1>
-<p>The Boat races button shows wins over the last 200ish years</p>
-<p>College founding shows the university timelines</p>
-<p>And College money shows how rich and how many students the colleges have</p>
+<h1>The Boat Races</h1>
+<p>Every year Oxford and Cambridge race each other and they've been doing it since 1829.
+ The Boat races button shows the total number of wins over the last 200ish years</p>
+<p>College founding shows the university timelines. </p>
+<p>And College money shows how rich and how many students the colleges have.
+ It's kind of weird that all the richest colleges were founded at around the same time.</p>
 </div>
 <script>
 var w = 800;
@@ -208,7 +218,6 @@ var win_data_men = [
 {winner:"	 Oxford	",year:	2013	,ox_total:0,cam_total:0,},
 {winner:"	 Oxford	",year:	2014	,ox_total:0,cam_total:0,},
 {winner:"	 Oxford	",year:	2015	,ox_total:0,cam_total:0,},
-{winner:"	 Cambridge	",year:	2016	,ox_total:0,cam_total:0,},
 ]
 var win_data_women=[
 {winner:"	 Oxford	",year:	1927	,ox_win_total:0,cam_win_total:0},
@@ -281,7 +290,6 @@ var win_data_women=[
 {winner:"	 Oxford	",year:	2013	,ox_win_total:0,cam_win_total:0},
 {winner:"	 Oxford	",year:	2014	,ox_win_total:0,cam_win_total:0},
 {winner:"	 Oxford	",year:	2015	,ox_win_total:0,cam_win_total:0},
-{winner:"	 Oxford	",year:	2016	,ox_win_total:0,cam_win_total:0},
 ]
 
 var races = win_data_men.length
@@ -413,13 +421,13 @@ var y_win_text = svg.append('text')
 
 svg.append('text')
 .text('Boat races')
-.attr('x',w-150)
+.attr('x',w-170)
 .attr('y',220)
 
 var race_button = svg.append('rect')
 .attr("class","button")
   .attr('y',h-370)
-  .attr('x',w-40)
+  .attr('x',w-60)
   .attr('width', 20)
   .attr('height',20)
   .on("click", function(){
@@ -799,7 +807,7 @@ var yLineRawText = svg.append('text')
 
 var Raw = svg.append('rect')
 .attr("class","button")
-  .attr('x', w-40)
+  .attr('x', w-60)
   .attr('y', h-300)
   .attr('height', 20)
   .attr('width', 20)
@@ -840,13 +848,13 @@ var Raw = svg.append('rect')
 })
 svg.append('text')
 .text('College Founding')
-.attr('x',w-150)
+.attr('x',w-170)
 .attr('y',h-305)
 
 
 var Adjusted = svg.append('rect')
 .attr("class","button")
-  .attr('x', w-40)
+  .attr('x', w-60)
   .attr('y', h-260)
   .attr('height', 20)
   .attr('width', 20)
@@ -890,7 +898,7 @@ var Adjusted = svg.append('rect')
 
 svg.append('text')
 .text('College Money')
-.attr('x',w-150)
+.attr('x',w-170)
 .attr('y',h-265)
 </script>
 <div id="foot" class="w3-dark-grey w3-hover-black">

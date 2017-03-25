@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Judging Journals</title>
+<link rel="stylesheet" href="../w3.css">
+<link rel="stylesheet" href="../graphiccite.css">
+<script src="../d3.v3.min.js"  charset="utf-8"></script>
+<link rel="icon" sizes="16x16 32x32 48x48 64x64" href="../images/favicon.ico">
+</head>
+<body class="w3-animate-opacity">
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+  <ul class="w3-navbar" id="myNavbar">
+    <li><a href="#" class="w3-padding-large">TOP</a></li>
+    <li><a href="../index.html" class="w3-padding-large">HOME</a></li>
+
+  </ul>
+</div>
+<script>
+// Change style of navbar on scroll
+window.onscroll = function() {myFunction()};
+function myFunction() {
+    var navbar = document.getElementById("myNavbar");
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        navbar.className = "w3-navbar" + " w3-card-2" + " w3-animate-top" + " w3-white";
+    } else {
+        navbar.className = navbar.className.replace(" w3-card-2 w3-animate-top w3-white", "");
+    }
+}
+</script>
+<div id = "top">    <a href="../index.html"> <span class="w3-center w3-padding-xlarge w3-dark-grey w3-xlarge w3-wide w3-animate-opacity">GRAPHIC <span class="w3-hide-small">CITE</span> </span></a>
+
+<!--Twitter button-->
+<a href="https://twitter.com/suchalilnerd" class="twitter-follow-button" data-show-count="false">Follow @suchalilnerd</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+
+<div class= "descript">
+<h1>Lovehoney at University</h1>
+<p>A few years ago Lovehoney revealed that Oxford and Cambridge spend the most on sex toys from them. They didn't just edge it, they were a few thousand pounds ahead of third place. Mouse over the graph to see which uni is which.</p>
+<p>But click the pink box to adjust for the number of students (shown by the size of the circle). Then there's this lovely correlation between amount spent at Lovehoney and how good the university is.</p>
+  <p>The more money students spend on sex toys the better the university is!</p>
+</div>
+<script>
+var w = 700;
+var h = 600;
+var padding = 100;
+
+var dataset = [
+  {University:"	Oxford	",Rank2014:	2	,LoveHoneySpend:	9689	,Population:	25670	,Firsts:	34.15116279	,TwoOnes:	59.01162791	,TwoTwos:	5.290697674	,OtherHons:	0.906976744	,Ordinary:	0	,NotClassified:	1.302325581	,},
+  {University:"	Cambridge	",Rank2014:	1	,LoveHoneySpend:	9794	,Population:	19385	,Firsts:	30.41666667	,TwoOnes:	51.3125	,TwoTwos:	9.791666667	,OtherHons:	0.708333333	,Ordinary:	0.125	,NotClassified:	6.958333333	,},
+{University:"	Manchester	",Rank2014:	31	,LoveHoneySpend:	5441	,Population:	38480	,Firsts:	22.55052265	,TwoOnes:	55.64982578	,TwoTwos:	16.61498258	,OtherHons:	4.404181185	,Ordinary:	0	,NotClassified:	0.797909408	,},
+{University:"	Lancaster	",Rank2014:	11	,LoveHoneySpend:	4103	,Population:	13075	,Firsts:	23.99212598	,TwoOnes:	53.91076115	,TwoTwos:	19.62992126	,OtherHons:	2.467191601	,Ordinary:	0	,NotClassified:	0.039370079	,},
+{University:"	York	",Rank2014:	16	,LoveHoneySpend:	3751	,Population:	17405	,Firsts:	28.71935484	,TwoOnes:	48.64193548	,TwoTwos:	19.03548387	,OtherHons:	4.090322581	,Ordinary:	0	,NotClassified:	0	,},
+{University:"	Leeds	",Rank2014:	34	,LoveHoneySpend:	3484	,Population:	30385	,Firsts:	23.33858268	,TwoOnes:	57.89238845	,TwoTwos:	15.66929134	,OtherHons:	1.682414698	,Ordinary:	1.020997375	,NotClassified:	0.42519685	,},
+{University:"	Southampton	",Rank2014:	24	,LoveHoneySpend:	3383	,Population:	24135	,Firsts:	28	,TwoOnes:	57.01401869	,TwoTwos:	9.908878505	,OtherHons:	4.71728972	,Ordinary:	0	,NotClassified:	0.471962617	,},
+{University:"	Warwick	",Rank2014:	10	,LoveHoneySpend:	3213	,Population:	27440	,Firsts:	27.26760563	,TwoOnes:	58.17957746	,TwoTwos:	11.62323944	,OtherHons:	2.38028169	,Ordinary:	0	,NotClassified:	0.017605634	,},
+{University:"	Surrey	",Rank2014:	8	,LoveHoneySpend:	3203	,Population:	15055	,Firsts:	27.49160671	,TwoOnes:	54.09592326	,TwoTwos:	16.16786571	,OtherHons:	2.189448441	,Ordinary:	0	,NotClassified:	0	,},
+{University:"	 Loughborough	",Rank2014:	14	,LoveHoneySpend:	2981	,Population:	16195	,Firsts:	24.84931507	,TwoOnes:	53.88013699	,TwoTwos:	19.10958904	,OtherHons:	2.363013699	,Ordinary:	0	,NotClassified:	0	,},
+
+]
+
+var Rank2014Array = [];
+var LoveHoneySpendArray = [];
+var PopulationArray = [];
+
+for (var i = 0; i<dataset.length;i++){
+  LoveHoneySpendArray[i] = dataset[i].LoveHoneySpend
+  Rank2014Array[i] = dataset[i].Rank2014
+  PopulationArray[i] = dataset[i].Population
+}
+
+var xScale = d3.scale.linear()
+ .domain([d3.min(Rank2014Array)-1,d3.max(Rank2014Array)])
+  .range([padding,w-padding]);
+
+
+var yScale = d3.scale.linear()
+  .domain([0,0.75])
+  .range([h-padding,padding]);
+
+var yRawScale = d3.scale.linear()
+  .domain([0,10000])
+  .range([h-padding,padding]);
+
+var rScale = d3.scale.linear()
+  .domain([d3.min(PopulationArray),d3.max(PopulationArray)])
+  .range([10,50]);
+
+
+var svg = d3.select('body')
+  .append('svg')
+  .attr('width',w)
+  .attr('height',h);
+
+var xAxis = d3.svg.axis()
+  .scale(xScale)
+  .orient("bottom");
+
+var yAxis = d3.svg.axis()
+  .scale(yScale)
+  .orient('left');
+
+var yRawAxis = d3.svg.axis()
+  .scale(yRawScale)
+  .orient('left');
+
+var point = svg.selectAll('g')
+  .data(dataset)
+  .enter()
+  .append('g')
+  .on('mouseover', function(d){
+    d3.select(this).selectAll('text')
+    .attr('opacity',1)
+  })
+  .on('mouseout',function(d){
+    d3.select(this).selectAll('text')
+    .transition()
+    .duration(100)
+    .attr('opacity',0)
+  })
+
+var circles = point.append('circle')
+  .attr('cx',function(d){
+  return xScale(d.Rank2014)
+})
+  .attr('cy',function(d){
+  return yRawScale(d.LoveHoneySpend)
+})
+  .attr('r',function(d){
+  return rScale(d.Population)
+})
+  .attr('fill', '#390983')
+  .attr("stroke",'#4d4d4d')
+  .attr('stroke-width',3)
+  .attr('opacity', 1);
+
+point.append('text')
+  .html(function(d){
+  return d.University
+})
+  .attr('x',function(d){
+  return w/2
+})
+  .attr('y',function(d){
+  return h/4
+})
+  .attr('text-anchor', 'middle')
+  .attr('opacity', 0)
+  .attr('class','Name');
+
+svg.append('g')
+  .attr('class', 'axis')
+  .attr("transform", "translate(0," + (h - padding) + ")")
+  .call(xAxis)
+
+
+svg.append('text')
+  .text('University Rank 2014')
+  .attr('x', function(d){
+  return xScale((d3.max(Rank2014Array)-d3.min(Rank2014Array))/2)
+})
+  .attr('y',h-padding+40)
+  .attr('text-anchor', 'middle')
+  .attr('class', 'lab')
+
+var yLine = svg.append('g')
+  .attr('class','axis')
+  .call(yAxis)
+  .attr('transform', 'translate('+ padding + ',0)')
+  .attr('opacity', 0)
+
+var yLineText = svg.append('text')
+  .text('Lovehoney Expenditure per Student (£ per Student)')
+  .attr('x',function(d){
+  return -(h/2)
+})
+  .attr('y', padding - 40)
+  .attr('transform', 'rotate(-90)')
+  .attr('text-anchor', 'middle')
+  .attr('opacity', 0)
+
+var yLineRaw = svg.append('g')
+  .attr('class','axis')
+  .call(yRawAxis)
+  .attr('transform', 'translate('+ padding + ',0)')
+
+var yLineRawText = svg.append('text')
+  .text('Lovehoney Expenditure (£)')
+  .attr('x',function(d){
+  return -(h/2)
+})
+  .attr('y', padding - 65)
+  .attr('transform', 'rotate(-90)')
+  .attr('text-anchor', 'middle')
+  
+
+var Raw = svg.append('rect')
+.attr("class","button")
+  .attr("fill",'#390983')
+  .attr('stroke','#4d4d4d')
+  .attr('x', 100)
+  .attr('y', 15)
+  .attr('height', 20)
+  .attr('width', 20)
+  .on("click", function(){
+  circles.transition()
+  .duration(700)
+    .attr('fill','#390983')
+    .attr('cy',function(d){
+  return yRawScale(d.LoveHoneySpend)
+})
+  yLine.transition()
+    .attr('opacity', 0)
+  yLineText.transition()
+    .attr('opacity', 0)
+  yLineRaw.transition()
+    .attr('opacity', 1)
+  yLineRawText.transition()
+    .attr('opacity', 1)
+})
+svg.append('text')
+.text('Raw')
+.attr('x',101)
+.attr('y',55)
+
+
+var Adjusted = svg.append('rect')
+.attr("class","button")
+  .attr('fill','#e52b45')
+  .attr('stroke',"#4d4d4d")
+  .attr('x', 150)
+  .attr('y', 15)
+  .attr('height', 20)
+  .attr('width', 20)
+  .on("click", function(){
+  circles.transition()
+  .duration(700)
+    .attr('fill','#e52b45')
+  .attr('cy',function(d){
+  return yScale((d.LoveHoneySpend)/(d.Population))
+})
+    yLine.transition()
+    .attr('opacity', 1)
+  yLineText.transition()
+    .attr('opacity', 1)
+  yLineRaw.transition()
+    .attr('opacity', 0)
+  yLineRawText.transition()
+    .attr('opacity', 0)
+})
+
+svg.append('text')
+.text('Adjusted')
+.attr('x',151)
+.attr('y',55)
+
+
+</script>
+<div id="foot" class="w3-dark-grey w3-hover-black">
+
+<!--Twitter button-->
+<a href="https://twitter.com/suchalilnerd" class="twitter-follow-button" data-show-count="false">Follow @suchalilnerd</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+</body>
+</html>
+

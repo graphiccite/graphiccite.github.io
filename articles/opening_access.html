@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Opening Access</title>
+<link rel="stylesheet" href="../w3.css">
+<link rel="stylesheet" href="../graphiccite.css">
+<script src="../d3.v3.min.js"  charset="utf-8"></script>
+</head>
+<body class="w3-animate-opacity">
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+  <ul class="w3-navbar" id="myNavbar">
+    <li><a href="#" class="w3-padding-large">TOP</a></li>
+    <li><a href="../index.html" class="w3-padding-large">HOME</a></li>
+
+  </ul>
+</div>
+<script>
+// Change style of navbar on scroll
+window.onscroll = function() {myFunction()};
+function myFunction() {
+    var navbar = document.getElementById("myNavbar");
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        navbar.className = "w3-navbar" + " w3-card-2" + " w3-animate-top" + " w3-white";
+    } else {
+        navbar.className = navbar.className.replace(" w3-card-2 w3-animate-top w3-white", "");
+    }
+}
+</script>
+<div id = "top">    <a href="../index.html"> <span class="w3-center w3-padding-xlarge w3-dark-grey w3-xlarge w3-wide w3-animate-opacity">GRAPHIC <span class="w3-hide-small">CITE</span> </span></a>
+
+<!--Twitter button-->
+<a href="https://twitter.com/suchalilnerd" class="twitter-follow-button" data-show-count="false">Follow @suchalilnerd</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+
+<div class= "descript">
+<h1>Open access</h1>
+<p>What difference does open access make to your publications? 
+Using articles from <a class="textlink" href="http://onlinelibrary.wiley.com/journal/10.1111/(ISSN)1365-294X">Molecular Ecology</a> 2014-2016 I wanted to see if open access papers got more attention.
+ Molecular Ecology is a traditional pay for access journal but authors can pay to make their paper open access. 
+ In the graph: paywalled papers are in red and open access ones in blue. 
+Click the black boxes to change the axes.
+</p>
+<p>Open access: the author pays to publish their article and everybody gets to enjoy the science for free.
+When you're trying to read a journal your university doesn't subscribe to you really start to appreciate open access.
+Also open access allows wider involvement in science and public return for public funding etc.
+</p>
+<p>But if you're a scientist, and hypothetically there were lots of funding cuts in universities, and perhaps your country had just -exited somesort of union which provided masses of funding for science;
+Then you might want to spend your research funds on something that will give you a measurable return to further your career.
+Is open access that something?</p>
+<p>Maybe. With open access more people can read your papers which could lead to more citations.
+Or perhaps in the new age of <a class="textlink" href="../articles/what_are_altmetrics.html">Altmetrics</a> more potential readers would lead to more tweets or more journalists being able to access and write news articles and blog posts about your work.
+</p>
+  <h2>Citations</h2>
+  <p>Citations are the currency of scientific achievement, it's how you're rated as a scientist really.
+  The obvious thing here is that very recent articles have fewer citations, 
+  which makes sense because the older a paper is the more time it's had to get cited.
+</p>
+<p>From the graph alone it's not clear if open access is making any difference. 
+But red is more dense at the bottom whereas blue is evenly spaced.
+That and some behind the scenes stats suggest that open access articles are cited slightly more. 
+That's interesting but I'm not going to suggest its causal, maybe people are only making their best papers open access.
+</p>
+  <h2>Altmetric score</h2>
+  <p>I expected that if open access made a difference then it would be to Altmetrics.
+  But it seems that there's no impact of open access on Altmetrics. 
+  I asked my science journalist buddy <a class="textlink" href="https://thedenatured.github.io/articles/chilli.html">John</a> about this. 
+  Apparently most science journalism is written from a mixture of abstracts and interviews. 
+  Reporters will also get told about what's going to be published, by sites like <a class="textlink" href="https://www.eurekalert.org/">this</a>, so they have time to write about it before hand.
+  
+</p>
+  <h2>Citations and Altmetrics</h2>
+  <p>I'm probably going to write a separate piece about this but it looks as though citations and Altmetrics measure very different things.
+  At least for Molecular Ecology.
+</p>
+</div>
+
+<!--script for D3 graph-->
+<script>
+var w = 800;
+var h = 600;
+var padding = 100;
+
+var dataset = [
+{name:"	10.1111/mec.12635	",time:	2014.083333	,cites:	0	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12630	",time:	2014.083333	,cites:	2	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12618	",time:	2014.083333	,cites:	2	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12628	",time:	2014.083333	,cites:	5	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12634	",time:	2014.083333	,cites:	8	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12619	",time:	2014.083333	,cites:	8	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12626	",time:	2014.083333	,cites:	10	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12613	",time:	2014.083333	,cites:	10	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12617	",time:	2014.083333	,cites:	13	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12625	",time:	2014.083333	,cites:	14	,altscore:	2.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12623	",time:	2014.083333	,cites:	19	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12629	",time:	2014.083333	,cites:	19	,altscore:	0.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12622	",time:	2014.083333	,cites:	23	,altscore:	1.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12639	",time:	2014.125	,cites:	0	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12650	",time:	2014.125	,cites:	0	,altscore:	17.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12652	",time:	2014.125	,cites:	1	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12644	",time:	2014.125	,cites:	3	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12641	",time:	2014.125	,cites:	3	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12642	",time:	2014.125	,cites:	4	,altscore:	8.83	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12653	",time:	2014.125	,cites:	7	,altscore:	6.95	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12647	",time:	2014.125	,cites:	7	,altscore:	10.45	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12587	",time:	2014.125	,cites:	7	,altscore:	8.008	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12636	",time:	2014.125	,cites:	16	,altscore:	13.4	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12646	",time:	2014.125	,cites:	18	,altscore:	2.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12648	",time:	2014.125	,cites:	27	,altscore:	0.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12615	",time:	2014.125	,cites:	33	,altscore:	47.45	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12674	",time:	2014.166667	,cites:	0	,altscore:	9.614	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12682	",time:	2014.166667	,cites:	1	,altscore:	3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12661	",time:	2014.166667	,cites:	3	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12669	",time:	2014.166667	,cites:	3	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12671	",time:	2014.166667	,cites:	4	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12664	",time:	2014.166667	,cites:	4	,altscore:	26.9	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12666	",time:	2014.166667	,cites:	6	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12663	",time:	2014.166667	,cites:	7	,altscore:	1.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12668	",time:	2014.166667	,cites:	9	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12665	",time:	2014.166667	,cites:	9	,altscore:	16.352	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12679	",time:	2014.166667	,cites:	13	,altscore:	1.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12656	",time:	2014.166667	,cites:	15	,altscore:	0.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12610	",time:	2014.166667	,cites:	15	,altscore:	0.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12687	",time:	2014.25	,cites:	1	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12691	",time:	2014.25	,cites:	5	,altscore:	45.716	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12684	",time:	2014.25	,cites:	6	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12675	",time:	2014.25	,cites:	9	,altscore:	27.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12658	",time:	2014.25	,cites:	9	,altscore:	7.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12693	",time:	2014.25	,cites:	11	,altscore:	2.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12681	",time:	2014.25	,cites:	11	,altscore:	0.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12689	",time:	2014.25	,cites:	11	,altscore:	21.756	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12690	",time:	2014.25	,cites:	12	,altscore:	2.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12590	",time:	2014.25	,cites:	29	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12694	",time:	2014.291667	,cites:	0	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12708	",time:	2014.291667	,cites:	0	,altscore:	2.95	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12696	",time:	2014.291667	,cites:	0	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12709	",time:	2014.291667	,cites:	2	,altscore:	4	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12716	",time:	2014.291667	,cites:	3	,altscore:	3.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12713	",time:	2014.291667	,cites:	5	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12697	",time:	2014.291667	,cites:	5	,altscore:	2.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12714	",time:	2014.291667	,cites:	6	,altscore:	0.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12711	",time:	2014.291667	,cites:	8	,altscore:	2.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12698	",time:	2014.291667	,cites:	8	,altscore:	42.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12704	",time:	2014.291667	,cites:	9	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12715	",time:	2014.291667	,cites:	13	,altscore:	11.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12702	",time:	2014.291667	,cites:	21	,altscore:	68.956	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12706	",time:	2014.291667	,cites:	37	,altscore:	4.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12705	",time:	2014.291667	,cites:	44	,altscore:	0.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12729	",time:	2014.333333	,cites:	0	,altscore:	12.116	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12730	",time:	2014.333333	,cites:	1	,altscore:	0.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12733	",time:	2014.333333	,cites:	2	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12728	",time:	2014.333333	,cites:	3	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12726	",time:	2014.333333	,cites:	4	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12736	",time:	2014.333333	,cites:	5	,altscore:	2.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12731	",time:	2014.333333	,cites:	5	,altscore:	0.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12723	",time:	2014.333333	,cites:	6	,altscore:	2.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12724	",time:	2014.333333	,cites:	6	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12737	",time:	2014.333333	,cites:	7	,altscore:	2.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12735	",time:	2014.333333	,cites:	9	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12738	",time:	2014.333333	,cites:	18	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12761	",time:	2014.375	,cites:	1	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12749	",time:	2014.375	,cites:	3	,altscore:	4.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12746	",time:	2014.375	,cites:	3	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12758	",time:	2014.375	,cites:	3	,altscore:	1.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12745	",time:	2014.375	,cites:	4	,altscore:	0.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12757	",time:	2014.375	,cites:	5	,altscore:	1.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12748	",time:	2014.375	,cites:	6	,altscore:	38.08	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12760	",time:	2014.375	,cites:	6	,altscore:	4.95	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12769	",time:	2014.375	,cites:	7	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12754	",time:	2014.375	,cites:	9	,altscore:	74.93	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12765	",time:	2014.375	,cites:	11	,altscore:	3.95	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12747	",time:	2014.375	,cites:	14	,altscore:	3.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12752	",time:	2014.375	,cites:	14	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12751	",time:	2014.375	,cites:	26	,altscore:	2.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12753	",time:	2014.375	,cites:	39	,altscore:	3.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12775	",time:	2014.416667	,cites:	1	,altscore:	4.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12776	",time:	2014.416667	,cites:	2	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12764	",time:	2014.416667	,cites:	4	,altscore:	2.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12777	",time:	2014.416667	,cites:	4	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12772	",time:	2014.416667	,cites:	5	,altscore:	1.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12767	",time:	2014.416667	,cites:	6	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12774	",time:	2014.416667	,cites:	7	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12779	",time:	2014.416667	,cites:	8	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12773	",time:	2014.416667	,cites:	10	,altscore:	9.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12770	",time:	2014.416667	,cites:	11	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12762	",time:	2014.416667	,cites:	11	,altscore:	1.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12778	",time:	2014.416667	,cites:	12	,altscore:	4.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12763	",time:	2014.416667	,cites:	12	,altscore:	6.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12771	",time:	2014.416667	,cites:	33	,altscore:	17.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12791	",time:	2014.458333	,cites:	1	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12786	",time:	2014.458333	,cites:	1	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12780	",time:	2014.458333	,cites:	1	,altscore:	7.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12790	",time:	2014.458333	,cites:	2	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12784	",time:	2014.458333	,cites:	2	,altscore:	2.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12783	",time:	2014.458333	,cites:	3	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12782	",time:	2014.458333	,cites:	8	,altscore:	2.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12799	",time:	2014.458333	,cites:	8	,altscore:	2.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12800	",time:	2014.458333	,cites:	8	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12789	",time:	2014.458333	,cites:	8	,altscore:	3.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12797	",time:	2014.458333	,cites:	9	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12801	",time:	2014.458333	,cites:	9	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12722	",time:	2014.458333	,cites:	17	,altscore:	16.466	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12804	",time:	2014.458333	,cites:	22	,altscore:	1.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12792	",time:	2014.458333	,cites:	25	,altscore:	4.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12808	",time:	2014.5	,cites:	0	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12818	",time:	2014.5	,cites:	2	,altscore:	4.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12817	",time:	2014.5	,cites:	3	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12802	",time:	2014.5	,cites:	4	,altscore:	4.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12815	",time:	2014.5	,cites:	5	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12806	",time:	2014.5	,cites:	6	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12816	",time:	2014.5	,cites:	8	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12803	",time:	2014.5	,cites:	10	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12744	",time:	2014.5	,cites:	10	,altscore:	5.45	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12814	",time:	2014.5	,cites:	17	,altscore:	2.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12821	",time:	2014.5	,cites:	20	,altscore:	5.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12820	",time:	2014.5	,cites:	21	,altscore:	4.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12819	",time:	2014.5	,cites:	21	,altscore:	1.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12743	",time:	2014.5	,cites:	24	,altscore:	6.4	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12812	",time:	2014.541667	,cites:	0	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12828	",time:	2014.541667	,cites:	0	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12834	",time:	2014.541667	,cites:	2	,altscore:	5.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12826	",time:	2014.541667	,cites:	3	,altscore:	0.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12836	",time:	2014.541667	,cites:	4	,altscore:	5.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12838	",time:	2014.541667	,cites:	4	,altscore:	3.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12829	",time:	2014.541667	,cites:	8	,altscore:	3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12830	",time:	2014.541667	,cites:	8	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12824	",time:	2014.541667	,cites:	9	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12825	",time:	2014.541667	,cites:	9	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12822	",time:	2014.541667	,cites:	11	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12835	",time:	2014.541667	,cites:	14	,altscore:	3.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12832	",time:	2014.541667	,cites:	28	,altscore:	26.838	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12850	",time:	2014.625	,cites:	2	,altscore:	1.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12841	",time:	2014.625	,cites:	2	,altscore:	3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12844	",time:	2014.625	,cites:	2	,altscore:	5.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12848	",time:	2014.625	,cites:	3	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12839	",time:	2014.625	,cites:	6	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12807	",time:	2014.625	,cites:	6	,altscore:	10.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12849	",time:	2014.625	,cites:	6	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12847	",time:	2014.625	,cites:	7	,altscore:	3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12852	",time:	2014.625	,cites:	7	,altscore:	3.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12750	",time:	2014.625	,cites:	24	,altscore:	16	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12766	",time:	2014.666667	,cites:	2	,altscore:	3.45	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12858	",time:	2014.666667	,cites:	2	,altscore:	4.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12856	",time:	2014.666667	,cites:	6	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12873	",time:	2014.666667	,cites:	6	,altscore:	6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12793	",time:	2014.666667	,cites:	7	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12871	",time:	2014.666667	,cites:	9	,altscore:	1.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12870	",time:	2014.666667	,cites:	10	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12861	",time:	2014.666667	,cites:	16	,altscore:	7.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12864	",time:	2014.666667	,cites:	16	,altscore:	13.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12854	",time:	2014.666667	,cites:	17	,altscore:	7.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12759	",time:	2014.666667	,cites:	17	,altscore:	3.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12857	",time:	2014.666667	,cites:	19	,altscore:	3.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12862	",time:	2014.666667	,cites:	22	,altscore:	3.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12879	",time:	2014.708333	,cites:	1	,altscore:	2.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12878	",time:	2014.708333	,cites:	1	,altscore:	2.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12880	",time:	2014.708333	,cites:	1	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12866	",time:	2014.708333	,cites:	2	,altscore:	3.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12886	",time:	2014.708333	,cites:	3	,altscore:	8	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12876	",time:	2014.708333	,cites:	4	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12884	",time:	2014.708333	,cites:	4	,altscore:	0.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12885	",time:	2014.708333	,cites:	6	,altscore:	4.8	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12882	",time:	2014.708333	,cites:	6	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12875	",time:	2014.708333	,cites:	10	,altscore:	7.45	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12811	",time:	2014.708333	,cites:	10	,altscore:	3.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12851	",time:	2014.708333	,cites:	17	,altscore:	26.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12874	",time:	2014.708333	,cites:	28	,altscore:	7.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12897	",time:	2014.75	,cites:	1	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12899	",time:	2014.75	,cites:	2	,altscore:	0.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12889	",time:	2014.75	,cites:	2	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12890	",time:	2014.75	,cites:	2	,altscore:	1.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12903	",time:	2014.75	,cites:	2	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12891	",time:	2014.75	,cites:	5	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12902	",time:	2014.75	,cites:	6	,altscore:	2.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12894	",time:	2014.75	,cites:	6	,altscore:	58.256	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12901	",time:	2014.75	,cites:	8	,altscore:	5.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12842	",time:	2014.75	,cites:	9	,altscore:	9.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12898	",time:	2014.75	,cites:	13	,altscore:	65.156	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12896	",time:	2014.75	,cites:	15	,altscore:	26.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12837	",time:	2014.75	,cites:	19	,altscore:	8.05	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12813	",time:	2014.75	,cites:	25	,altscore:	8.4	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12922	",time:	2014.791667	,cites:	0	,altscore:	1.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12914	",time:	2014.791667	,cites:	1	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12923	",time:	2014.791667	,cites:	1	,altscore:	9.33	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12912	",time:	2014.791667	,cites:	1	,altscore:	11.45	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12913	",time:	2014.791667	,cites:	2	,altscore:	3.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12909	",time:	2014.791667	,cites:	2	,altscore:	3.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12918	",time:	2014.791667	,cites:	2	,altscore:	2.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12915	",time:	2014.791667	,cites:	2	,altscore:	5.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12916	",time:	2014.791667	,cites:	3	,altscore:	3.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12924	",time:	2014.791667	,cites:	3	,altscore:	3.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12921	",time:	2014.791667	,cites:	4	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12907	",time:	2014.791667	,cites:	7	,altscore:	5.55	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12917	",time:	2014.791667	,cites:	8	,altscore:	3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12911	",time:	2014.791667	,cites:	10	,altscore:	4.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12942	",time:	2014.833333	,cites:	2	,altscore:	7.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12933	",time:	2014.833333	,cites:	2	,altscore:	2.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12928	",time:	2014.833333	,cites:	4	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12937	",time:	2014.833333	,cites:	4	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12940	",time:	2014.833333	,cites:	4	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12941	",time:	2014.833333	,cites:	4	,altscore:	3.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12926	",time:	2014.833333	,cites:	5	,altscore:	4.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12936	",time:	2014.833333	,cites:	6	,altscore:	16.55	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12927	",time:	2014.833333	,cites:	8	,altscore:	2.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12939	",time:	2014.833333	,cites:	9	,altscore:	7.55	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12919	",time:	2014.833333	,cites:	11	,altscore:	12.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12860	",time:	2014.833333	,cites:	18	,altscore:	4.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12944	",time:	2014.875	,cites:	0	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12963	",time:	2014.875	,cites:	0	,altscore:	13.55	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12959	",time:	2014.875	,cites:	1	,altscore:	6.05	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12943	",time:	2014.875	,cites:	2	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12946	",time:	2014.875	,cites:	3	,altscore:	3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12935	",time:	2014.875	,cites:	4	,altscore:	34.95	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12949	",time:	2014.875	,cites:	4	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12957	",time:	2014.875	,cites:	4	,altscore:	12.8	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12960	",time:	2014.875	,cites:	4	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12962	",time:	2014.875	,cites:	4	,altscore:	1.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12956	",time:	2014.875	,cites:	5	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12952	",time:	2014.875	,cites:	6	,altscore:	6.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12950	",time:	2014.875	,cites:	9	,altscore:	1.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12954	",time:	2014.875	,cites:	9	,altscore:	13.15	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12947	",time:	2014.875	,cites:	12	,altscore:	2.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12976	",time:	2014.916667	,cites:	0	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12973	",time:	2014.916667	,cites:	1	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12981	",time:	2014.916667	,cites:	1	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12970	",time:	2014.916667	,cites:	2	,altscore:	1.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12910	",time:	2014.916667	,cites:	3	,altscore:	11.03	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12931	",time:	2014.916667	,cites:	3	,altscore:	7.3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12975	",time:	2014.916667	,cites:	4	,altscore:	11	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12967	",time:	2014.916667	,cites:	5	,altscore:	3.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12971	",time:	2014.916667	,cites:	6	,altscore:	13	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12969	",time:	2014.916667	,cites:	7	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12979	",time:	2014.916667	,cites:	8	,altscore:	12.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12980	",time:	2014.916667	,cites:	11	,altscore:	4.55	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12972	",time:	2014.916667	,cites:	13	,altscore:	4	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12977	",time:	2014.916667	,cites:	19	,altscore:	19.972	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13050	",time:	2015.083333	,cites:	0	,altscore:	3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13016	",time:	2015.083333	,cites:	1	,altscore:	6.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13047	",time:	2015.083333	,cites:	1	,altscore:	2.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13053	",time:	2015.083333	,cites:	1	,altscore:	1.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13057	",time:	2015.083333	,cites:	1	,altscore:	4.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13046	",time:	2015.083333	,cites:	4	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13049	",time:	2015.083333	,cites:	4	,altscore:	5.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13052	",time:	2015.083333	,cites:	5	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13058	",time:	2015.083333	,cites:	8	,altscore:	27.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13062	",time:	2015.125	,cites:	0	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13068	",time:	2015.125	,cites:	0	,altscore:	1.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13072	",time:	2015.125	,cites:	0	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13064	",time:	2015.125	,cites:	1	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13069	",time:	2015.125	,cites:	1	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13065	",time:	2015.125	,cites:	1	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13067	",time:	2015.125	,cites:	2	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13077	",time:	2015.125	,cites:	2	,altscore:	1.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13071	",time:	2015.125	,cites:	2	,altscore:	13.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13079	",time:	2015.125	,cites:	3	,altscore:	1.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13066	",time:	2015.125	,cites:	4	,altscore:	5.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13031	",time:	2015.125	,cites:	4	,altscore:	9.864	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13060	",time:	2015.125	,cites:	7	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13076	",time:	2015.125	,cites:	8	,altscore:	4.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13061	",time:	2015.125	,cites:	10	,altscore:	4.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13092	",time:	2015.166667	,cites:	0	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13093	",time:	2015.166667	,cites:	0	,altscore:	4.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13085	",time:	2015.166667	,cites:	1	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13083	",time:	2015.166667	,cites:	2	,altscore:	3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13080	",time:	2015.166667	,cites:	3	,altscore:	1.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13091	",time:	2015.166667	,cites:	3	,altscore:	2.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13088	",time:	2015.166667	,cites:	3	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13078	",time:	2015.166667	,cites:	4	,altscore:	3.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13086	",time:	2015.166667	,cites:	7	,altscore:	97.08	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13090	",time:	2015.166667	,cites:	11	,altscore:	9.9	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13051	",time:	2015.166667	,cites:	12	,altscore:	9.282	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13095	",time:	2015.166667	,cites:	15	,altscore:	4.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13100	",time:	2015.166667	,cites:	26	,altscore:	27.878	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13110	",time:	2015.208333	,cites:	0	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13109	",time:	2015.208333	,cites:	0	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13116	",time:	2015.208333	,cites:	1	,altscore:	5.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13103	",time:	2015.208333	,cites:	1	,altscore:	3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13115	",time:	2015.208333	,cites:	1	,altscore:	5.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13106	",time:	2015.208333	,cites:	1	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13107	",time:	2015.208333	,cites:	2	,altscore:	2.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13114	",time:	2015.208333	,cites:	3	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13105	",time:	2015.208333	,cites:	4	,altscore:	3.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13104	",time:	2015.208333	,cites:	4	,altscore:	1.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13111	",time:	2015.208333	,cites:	9	,altscore:	15.472	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13119	",time:	2015.25	,cites:	0	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13122	",time:	2015.25	,cites:	0	,altscore:	5.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13133	",time:	2015.25	,cites:	0	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13131	",time:	2015.25	,cites:	3	,altscore:	4	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13121	",time:	2015.25	,cites:	3	,altscore:	95.03	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13125	",time:	2015.25	,cites:	4	,altscore:	10.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13135	",time:	2015.25	,cites:	4	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13130	",time:	2015.25	,cites:	5	,altscore:	4.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13128	",time:	2015.25	,cites:	7	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13127	",time:	2015.25	,cites:	7	,altscore:	9.65	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13134	",time:	2015.25	,cites:	8	,altscore:	12.45	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13136	",time:	2015.25	,cites:	8	,altscore:	8.366	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13124	",time:	2015.25	,cites:	8	,altscore:	13.15	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13123	",time:	2015.25	,cites:	10	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13137	",time:	2015.25	,cites:	15	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13149	",time:	2015.291667	,cites:	0	,altscore:	3.05	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13151	",time:	2015.291667	,cites:	0	,altscore:	5.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13155	",time:	2015.291667	,cites:	0	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13150	",time:	2015.291667	,cites:	0	,altscore:	2.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13153	",time:	2015.291667	,cites:	0	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13156	",time:	2015.291667	,cites:	0	,altscore:	4.45	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13158	",time:	2015.291667	,cites:	2	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13152	",time:	2015.291667	,cites:	3	,altscore:	2.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13159	",time:	2015.291667	,cites:	3	,altscore:	3.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13143	",time:	2015.291667	,cites:	3	,altscore:	13.05	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13147	",time:	2015.291667	,cites:	4	,altscore:	4.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13148	",time:	2015.291667	,cites:	4	,altscore:	2.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13142	",time:	2015.291667	,cites:	5	,altscore:	0.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13144	",time:	2015.291667	,cites:	12	,altscore:	112.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13118	",time:	2015.291667	,cites:	12	,altscore:	3.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13171	",time:	2015.375	,cites:	0	,altscore:	3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13182	",time:	2015.375	,cites:	0	,altscore:	6.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13185	",time:	2015.375	,cites:	0	,altscore:	12	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13179	",time:	2015.375	,cites:	0	,altscore:	3.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13168	",time:	2015.375	,cites:	1	,altscore:	6.3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13161	",time:	2015.375	,cites:	1	,altscore:	4.95	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13180	",time:	2015.375	,cites:	1	,altscore:	3.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13173	",time:	2015.375	,cites:	1	,altscore:	8.95	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13177	",time:	2015.375	,cites:	2	,altscore:	3.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13178	",time:	2015.375	,cites:	2	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13169	",time:	2015.375	,cites:	3	,altscore:	18.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13181	",time:	2015.375	,cites:	3	,altscore:	17.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13187	",time:	2015.375	,cites:	3	,altscore:	40.54	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13170	",time:	2015.375	,cites:	4	,altscore:	3.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13145	",time:	2015.375	,cites:	5	,altscore:	13.8	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13174	",time:	2015.375	,cites:	6	,altscore:	3.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13176	",time:	2015.375	,cites:	9	,altscore:	5.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13172	",time:	2015.375	,cites:	16	,altscore:	10.55	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13206	",time:	2015.416667	,cites:	0	,altscore:	4.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13202	",time:	2015.416667	,cites:	0	,altscore:	5.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13194	",time:	2015.416667	,cites:	0	,altscore:	1.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13207	",time:	2015.416667	,cites:	1	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13189	",time:	2015.416667	,cites:	1	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13205	",time:	2015.416667	,cites:	2	,altscore:	3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13199	",time:	2015.416667	,cites:	2	,altscore:	3.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13193	",time:	2015.416667	,cites:	2	,altscore:	1.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13200	",time:	2015.416667	,cites:	6	,altscore:	36.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13203	",time:	2015.416667	,cites:	6	,altscore:	9.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13211	",time:	2015.416667	,cites:	7	,altscore:	4.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13164	",time:	2015.416667	,cites:	10	,altscore:	3.45	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13191	",time:	2015.416667	,cites:	12	,altscore:	11.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13132	",time:	2015.416667	,cites:	16	,altscore:	27.9	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13218	",time:	2015.458333	,cites:	0	,altscore:	2.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13228	",time:	2015.458333	,cites:	0	,altscore:	10.95	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13233	",time:	2015.458333	,cites:	0	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13229	",time:	2015.458333	,cites:	0	,altscore:	3.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13214	",time:	2015.458333	,cites:	1	,altscore:	11.572	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13215	",time:	2015.458333	,cites:	1	,altscore:	37.356	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13224	",time:	2015.458333	,cites:	1	,altscore:	5.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13227	",time:	2015.458333	,cites:	1	,altscore:	4.8	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13223	",time:	2015.458333	,cites:	2	,altscore:	2.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13213	",time:	2015.458333	,cites:	2	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13217	",time:	2015.458333	,cites:	2	,altscore:	5.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13212	",time:	2015.458333	,cites:	3	,altscore:	3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13232	",time:	2015.458333	,cites:	3	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13225	",time:	2015.458333	,cites:	8	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13140	",time:	2015.458333	,cites:	14	,altscore:	49.716	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13242	",time:	2015.5	,cites:	1	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13255	",time:	2015.5	,cites:	1	,altscore:	5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13257	",time:	2015.5	,cites:	1	,altscore:	0.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13248	",time:	2015.5	,cites:	1	,altscore:	4.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13250	",time:	2015.5	,cites:	1	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13256	",time:	2015.5	,cites:	2	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13235	",time:	2015.5	,cites:	4	,altscore:	1.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13234	",time:	2015.5	,cites:	4	,altscore:	4.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13237	",time:	2015.5	,cites:	4	,altscore:	1.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13240	",time:	2015.5	,cites:	4	,altscore:	2.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13239	",time:	2015.5	,cites:	4	,altscore:	1.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13236	",time:	2015.5	,cites:	5	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13188	",time:	2015.5	,cites:	7	,altscore:	3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13245	",time:	2015.5	,cites:	22	,altscore:	12.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13266	",time:	2015.541667	,cites:	0	,altscore:	10.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13273	",time:	2015.541667	,cites:	0	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13267	",time:	2015.541667	,cites:	0	,altscore:	5.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13270	",time:	2015.541667	,cites:	0	,altscore:	2.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13261	",time:	2015.541667	,cites:	2	,altscore:	3.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13265	",time:	2015.541667	,cites:	2	,altscore:	3.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13259	",time:	2015.541667	,cites:	3	,altscore:	8	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13274	",time:	2015.541667	,cites:	3	,altscore:	0.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13204	",time:	2015.541667	,cites:	5	,altscore:	1.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13275	",time:	2015.541667	,cites:	5	,altscore:	13.55	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13271	",time:	2015.541667	,cites:	10	,altscore:	15.65	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13258	",time:	2015.541667	,cites:	11	,altscore:	42.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13195	",time:	2015.541667	,cites:	14	,altscore:	6.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13279	",time:	2015.583333	,cites:	0	,altscore:	4.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13276	",time:	2015.583333	,cites:	0	,altscore:	1.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13285	",time:	2015.583333	,cites:	0	,altscore:	2.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13287	",time:	2015.583333	,cites:	1	,altscore:	0.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13282	",time:	2015.583333	,cites:	1	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13289	",time:	2015.583333	,cites:	1	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13281	",time:	2015.583333	,cites:	2	,altscore:	2.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13292	",time:	2015.583333	,cites:	2	,altscore:	1.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13278	",time:	2015.583333	,cites:	2	,altscore:	0.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13290	",time:	2015.583333	,cites:	3	,altscore:	9.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13293	",time:	2015.583333	,cites:	5	,altscore:	2.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13284	",time:	2015.583333	,cites:	6	,altscore:	6.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13286	",time:	2015.583333	,cites:	7	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13298	",time:	2015.625	,cites:	0	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13306	",time:	2015.625	,cites:	0	,altscore:	2.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13301	",time:	2015.625	,cites:	0	,altscore:	2.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13310	",time:	2015.625	,cites:	0	,altscore:	2.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13315	",time:	2015.625	,cites:	0	,altscore:	2.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13302	",time:	2015.625	,cites:	1	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13309	",time:	2015.625	,cites:	2	,altscore:	6.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13313	",time:	2015.625	,cites:	2	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13312	",time:	2015.625	,cites:	2	,altscore:	6.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13303	",time:	2015.625	,cites:	3	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13314	",time:	2015.625	,cites:	4	,altscore:	19.4	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13305	",time:	2015.625	,cites:	5	,altscore:	8.08	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13294	",time:	2015.625	,cites:	6	,altscore:	4.95	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13222	",time:	2015.625	,cites:	7	,altscore:	3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13325	",time:	2015.666667	,cites:	0	,altscore:	3.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13336	",time:	2015.666667	,cites:	0	,altscore:	1.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13316	",time:	2015.666667	,cites:	0	,altscore:	4.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13333	",time:	2015.666667	,cites:	0	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13320	",time:	2015.666667	,cites:	1	,altscore:	2.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13324	",time:	2015.666667	,cites:	1	,altscore:	4	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13326	",time:	2015.666667	,cites:	2	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13328	",time:	2015.666667	,cites:	3	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13319	",time:	2015.666667	,cites:	4	,altscore:	2.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13329	",time:	2015.666667	,cites:	6	,altscore:	2.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13334	",time:	2015.666667	,cites:	8	,altscore:	9	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13238	",time:	2015.666667	,cites:	16	,altscore:	3.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13344	",time:	2015.708333	,cites:	0	,altscore:	3.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13354	",time:	2015.708333	,cites:	0	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13342	",time:	2015.708333	,cites:	0	,altscore:	3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13353	",time:	2015.708333	,cites:	1	,altscore:	11.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13350	",time:	2015.708333	,cites:	2	,altscore:	3.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13349	",time:	2015.708333	,cites:	2	,altscore:	2.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13330	",time:	2015.708333	,cites:	3	,altscore:	4.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13343	",time:	2015.708333	,cites:	3	,altscore:	3.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13338	",time:	2015.708333	,cites:	4	,altscore:	14.45	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13348	",time:	2015.708333	,cites:	4	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13346	",time:	2015.708333	,cites:	5	,altscore:	7.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13340	",time:	2015.708333	,cites:	5	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13295	",time:	2015.708333	,cites:	6	,altscore:	9.4	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13358	",time:	2015.75	,cites:	0	,altscore:	88.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13359	",time:	2015.75	,cites:	0	,altscore:	3.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13370	",time:	2015.75	,cites:	0	,altscore:	4.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13366	",time:	2015.75	,cites:	0	,altscore:	4	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13371	",time:	2015.75	,cites:	1	,altscore:	2.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13367	",time:	2015.75	,cites:	1	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13363	",time:	2015.75	,cites:	2	,altscore:	2.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13361	",time:	2015.75	,cites:	2	,altscore:	7.05	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13373	",time:	2015.75	,cites:	3	,altscore:	7.15	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13368	",time:	2015.75	,cites:	3	,altscore:	2.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13369	",time:	2015.75	,cites:	4	,altscore:	2.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13372	",time:	2015.75	,cites:	5	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13384	",time:	2015.791667	,cites:	0	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13318	",time:	2015.791667	,cites:	0	,altscore:	3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13379	",time:	2015.791667	,cites:	0	,altscore:	4.45	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13376	",time:	2015.791667	,cites:	0	,altscore:	6.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13395	",time:	2015.791667	,cites:	1	,altscore:	3.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13386	",time:	2015.791667	,cites:	1	,altscore:	6.4	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13388	",time:	2015.791667	,cites:	2	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13375	",time:	2015.791667	,cites:	2	,altscore:	10.072	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13374	",time:	2015.791667	,cites:	2	,altscore:	5.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13392	",time:	2015.791667	,cites:	3	,altscore:	6.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13377	",time:	2015.791667	,cites:	4	,altscore:	5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13383	",time:	2015.791667	,cites:	6	,altscore:	18.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13337	",time:	2015.833333	,cites:	0	,altscore:	2.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13401	",time:	2015.833333	,cites:	1	,altscore:	3.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13404	",time:	2015.833333	,cites:	1	,altscore:	4.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13405	",time:	2015.833333	,cites:	1	,altscore:	3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13394	",time:	2015.833333	,cites:	2	,altscore:	3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13397	",time:	2015.833333	,cites:	6	,altscore:	33.166	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13402	",time:	2015.833333	,cites:	7	,altscore:	5.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13341	",time:	2015.833333	,cites:	8	,altscore:	31.422	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13424	",time:	2015.875	,cites:	0	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13407	",time:	2015.875	,cites:	0	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13408	",time:	2015.875	,cites:	0	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13419	",time:	2015.875	,cites:	0	,altscore:	8.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13420	",time:	2015.875	,cites:	0	,altscore:	85.312	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13418	",time:	2015.875	,cites:	0	,altscore:	35.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13423	",time:	2015.875	,cites:	0	,altscore:	1.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13398	",time:	2015.875	,cites:	1	,altscore:	59.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13411	",time:	2015.875	,cites:	1	,altscore:	2.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13410	",time:	2015.875	,cites:	1	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13421	",time:	2015.875	,cites:	1	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13422	",time:	2015.875	,cites:	1	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13416	",time:	2015.875	,cites:	2	,altscore:	38.53	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13417	",time:	2015.875	,cites:	2	,altscore:	3.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13396	",time:	2015.875	,cites:	5	,altscore:	28.05	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13415	",time:	2015.875	,cites:	5	,altscore:	20.39	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13409	",time:	2015.875	,cites:	8	,altscore:	13.08	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13426	",time:	2015.916667	,cites:	0	,altscore:	0.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13430	",time:	2015.916667	,cites:	0	,altscore:	6.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13440	",time:	2015.916667	,cites:	0	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13439	",time:	2015.916667	,cites:	0	,altscore:	2.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13425	",time:	2015.916667	,cites:	0	,altscore:	2.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13429	",time:	2015.916667	,cites:	0	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13413	",time:	2015.916667	,cites:	0	,altscore:	2.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13433	",time:	2015.916667	,cites:	0	,altscore:	7.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13432	",time:	2015.916667	,cites:	1	,altscore:	2.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13441	",time:	2015.916667	,cites:	2	,altscore:	5.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13431	",time:	2015.916667	,cites:	2	,altscore:	30.65	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13438	",time:	2015.916667	,cites:	2	,altscore:	1.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13435	",time:	2015.916667	,cites:	3	,altscore:	3.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13509	",time:	2016.083333	,cites:	0	,altscore:	0.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13517	",time:	2016.083333	,cites:	0	,altscore:	9.08	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13505	",time:	2016.083333	,cites:	0	,altscore:	6.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13512	",time:	2016.083333	,cites:	0	,altscore:	0.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13514	",time:	2016.083333	,cites:	1	,altscore:	8.05	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13507	",time:	2016.083333	,cites:	1	,altscore:	3.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13499	",time:	2016.083333	,cites:	1	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13510	",time:	2016.083333	,cites:	2	,altscore:	10.15	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13516	",time:	2016.083333	,cites:	3	,altscore:	13.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13487	",time:	2016.083333	,cites:	4	,altscore:	9.33	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13446	",time:	2016.083333	,cites:	4	,altscore:	6.45	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13524	",time:	2016.125	,cites:	0	,altscore:	7.05	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13528	",time:	2016.125	,cites:	0	,altscore:	9.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13525	",time:	2016.125	,cites:	0	,altscore:	10.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13530	",time:	2016.125	,cites:	0	,altscore:	7.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13500	",time:	2016.125	,cites:	0	,altscore:	4.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13523	",time:	2016.125	,cites:	1	,altscore:	0.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13445	",time:	2016.125	,cites:	4	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13428	",time:	2016.125	,cites:	26	,altscore:	48.144	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13541	",time:	2016.166667	,cites:	0	,altscore:	6.9	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13542	",time:	2016.166667	,cites:	0	,altscore:	3.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13545	",time:	2016.166667	,cites:	1	,altscore:	34.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13464	",time:	2016.166667	,cites:	1	,altscore:	4.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13537	",time:	2016.166667	,cites:	2	,altscore:	7.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13548	",time:	2016.166667	,cites:	3	,altscore:	7.55	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13538	",time:	2016.166667	,cites:	4	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13455	",time:	2016.166667	,cites:	12	,altscore:	3.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13547	",time:	2016.208333	,cites:	0	,altscore:	4	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13570	",time:	2016.208333	,cites:	0	,altscore:	6.55	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13566	",time:	2016.208333	,cites:	0	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13558	",time:	2016.208333	,cites:	0	,altscore:	2.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13562	",time:	2016.208333	,cites:	0	,altscore:	9.4	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13553	",time:	2016.208333	,cites:	0	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13568	",time:	2016.208333	,cites:	1	,altscore:	3.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13560	",time:	2016.208333	,cites:	2	,altscore:	2.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13546	",time:	2016.208333	,cites:	2	,altscore:	2.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13511	",time:	2016.208333	,cites:	6	,altscore:	13.95	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13565	",time:	2016.25	,cites:	0	,altscore:	2.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13574	",time:	2016.25	,cites:	0	,altscore:	4.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13572	",time:	2016.25	,cites:	0	,altscore:	0.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13583	",time:	2016.25	,cites:	0	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13518	",time:	2016.25	,cites:	0	,altscore:	0.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13575	",time:	2016.25	,cites:	0	,altscore:	4.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13581	",time:	2016.25	,cites:	0	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13461	",time:	2016.25	,cites:	0	,altscore:	4.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13579	",time:	2016.25	,cites:	4	,altscore:	3.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13564	",time:	2016.25	,cites:	6	,altscore:	12.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13595	",time:	2016.333333	,cites:	0	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13588	",time:	2016.333333	,cites:	0	,altscore:	3.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13585	",time:	2016.333333	,cites:	0	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13589	",time:	2016.333333	,cites:	0	,altscore:	0.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13593	",time:	2016.333333	,cites:	0	,altscore:	3.3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13590	",time:	2016.333333	,cites:	1	,altscore:	14.846	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13501	",time:	2016.333333	,cites:	1	,altscore:	13.48	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13584	",time:	2016.333333	,cites:	1	,altscore:	2.5	,openaccess:"	FALSE	",},
+//{name:"	10.1111/mec.13604	",time:	2016.333333	,cites:	1	,altscore:	249.242	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13597	",time:	2016.333333	,cites:	1	,altscore:	10.08	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13594	",time:	2016.375	,cites:	0	,altscore:	1.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13616	",time:	2016.375	,cites:	0	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13609	",time:	2016.375	,cites:	0	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13625	",time:	2016.375	,cites:	0	,altscore:	6.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13633	",time:	2016.375	,cites:	0	,altscore:	8.33	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13614	",time:	2016.375	,cites:	0	,altscore:	9.58	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13619	",time:	2016.375	,cites:	1	,altscore:	3.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13621	",time:	2016.375	,cites:	1	,altscore:	7.33	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13605	",time:	2016.375	,cites:	2	,altscore:	83.888	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13620	",time:	2016.375	,cites:	2	,altscore:	26.53	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13608	",time:	2016.375	,cites:	2	,altscore:	16.73	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13622	",time:	2016.458333	,cites:	0	,altscore:	15.88	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13666	",time:	2016.458333	,cites:	0	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13662	",time:	2016.458333	,cites:	0	,altscore:	9.65	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13637	",time:	2016.458333	,cites:	0	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13661	",time:	2016.458333	,cites:	0	,altscore:	6.45	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13652	",time:	2016.458333	,cites:	0	,altscore:	2.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13634	",time:	2016.458333	,cites:	0	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13658	",time:	2016.458333	,cites:	0	,altscore:	4.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13654	",time:	2016.458333	,cites:	1	,altscore:	3.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13651	",time:	2016.458333	,cites:	1	,altscore:	8.08	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13655	",time:	2016.458333	,cites:	2	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13638	",time:	2016.458333	,cites:	3	,altscore:	97.322	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13657	",time:	2016.458333	,cites:	3	,altscore:	3.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13646	",time:	2016.5	,cites:	0	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13653	",time:	2016.5	,cites:	0	,altscore:	14.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13649	",time:	2016.5	,cites:	0	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13671	",time:	2016.5	,cites:	0	,altscore:	2.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13635	",time:	2016.5	,cites:	0	,altscore:	0.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13669	",time:	2016.5	,cites:	0	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13628	",time:	2016.5	,cites:	0	,altscore:	9.08	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13680	",time:	2016.5	,cites:	0	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13659	",time:	2016.5	,cites:	1	,altscore:	64.71	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13599	",time:	2016.5	,cites:	2	,altscore:	18.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13660	",time:	2016.5	,cites:	2	,altscore:	45.15	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13613	",time:	2016.5	,cites:	3	,altscore:	2.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13627	",time:	2016.5	,cites:	5	,altscore:	11.4	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13674	",time:	2016.541667	,cites:	0	,altscore:	13.95	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13692	",time:	2016.541667	,cites:	0	,altscore:	6.05	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13693	",time:	2016.541667	,cites:	0	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13717	",time:	2016.541667	,cites:	0	,altscore:	15.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13683	",time:	2016.541667	,cites:	0	,altscore:	2.95	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13690	",time:	2016.541667	,cites:	0	,altscore:	5.3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13697	",time:	2016.541667	,cites:	0	,altscore:	0.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13694	",time:	2016.541667	,cites:	0	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13695	",time:	2016.541667	,cites:	0	,altscore:	16.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13686	",time:	2016.541667	,cites:	0	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13672	",time:	2016.541667	,cites:	1	,altscore:	40.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13696	",time:	2016.541667	,cites:	1	,altscore:	11.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13682	",time:	2016.541667	,cites:	1	,altscore:	2.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13684	",time:	2016.541667	,cites:	1	,altscore:	19.3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13698	",time:	2016.583333	,cites:	0	,altscore:	5.2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13705	",time:	2016.583333	,cites:	0	,altscore:	4	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13703	",time:	2016.583333	,cites:	1	,altscore:	2.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13714	",time:	2016.583333	,cites:	1	,altscore:	1.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13716	",time:	2016.583333	,cites:	2	,altscore:	16.3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13709	",time:	2016.583333	,cites:	2	,altscore:	5.45	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13718	",time:	2016.625	,cites:	0	,altscore:	15.88	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13723	",time:	2016.625	,cites:	0	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13733	",time:	2016.625	,cites:	0	,altscore:	8.3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13734	",time:	2016.625	,cites:	0	,altscore:	1.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13722	",time:	2016.625	,cites:	0	,altscore:	0.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13729	",time:	2016.625	,cites:	0	,altscore:	7.95	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13724	",time:	2016.625	,cites:	0	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13726	",time:	2016.625	,cites:	0	,altscore:	30.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13745	",time:	2016.625	,cites:	0	,altscore:	10.28	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13728	",time:	2016.625	,cites:	0	,altscore:	2.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13719	",time:	2016.625	,cites:	0	,altscore:	8.93	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13727	",time:	2016.625	,cites:	0	,altscore:	1.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13739	",time:	2016.625	,cites:	0	,altscore:	23.98	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13741	",time:	2016.625	,cites:	0	,altscore:	8.83	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13721	",time:	2016.625	,cites:	1	,altscore:	0.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13732	",time:	2016.625	,cites:	1	,altscore:	45.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13735	",time:	2016.625	,cites:	1	,altscore:	0.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13740	",time:	2016.625	,cites:	2	,altscore:	7.65	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13702	",time:	2016.625	,cites:	4	,altscore:	14.98	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13748	",time:	2016.666667	,cites:	0	,altscore:	5.45	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13755	",time:	2016.666667	,cites:	0	,altscore:	2.95	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13757	",time:	2016.666667	,cites:	0	,altscore:	1.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13749	",time:	2016.666667	,cites:	0	,altscore:	5.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13754	",time:	2016.666667	,cites:	0	,altscore:	37.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13768	",time:	2016.666667	,cites:	0	,altscore:	3.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13750	",time:	2016.666667	,cites:	0	,altscore:	11.3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13751	",time:	2016.666667	,cites:	0	,altscore:	9.05	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13756	",time:	2016.666667	,cites:	0	,altscore:	25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13706	",time:	2016.666667	,cites:	0	,altscore:	3.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13744	",time:	2016.666667	,cites:	0	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13747	",time:	2016.666667	,cites:	0	,altscore:	0.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13766	",time:	2016.666667	,cites:	0	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13758	",time:	2016.666667	,cites:	0	,altscore:	4.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13770	",time:	2016.666667	,cites:	0	,altscore:	4.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13776	",time:	2016.708333	,cites:	0	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13780	",time:	2016.708333	,cites:	0	,altscore:	45.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13782	",time:	2016.708333	,cites:	0	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13787	",time:	2016.708333	,cites:	0	,altscore:	15.88	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13790	",time:	2016.708333	,cites:	0	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13792	",time:	2016.708333	,cites:	0	,altscore:	12.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13737	",time:	2016.708333	,cites:	0	,altscore:	6.8	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13777	",time:	2016.708333	,cites:	0	,altscore:	14.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13785	",time:	2016.708333	,cites:	0	,altscore:	2.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13781	",time:	2016.708333	,cites:	0	,altscore:	5.55	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13786	",time:	2016.708333	,cites:	0	,altscore:	4.95	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13764	",time:	2016.708333	,cites:	0	,altscore:	2.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13788	",time:	2016.708333	,cites:	0	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13775	",time:	2016.708333	,cites:	0	,altscore:	3	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13779	",time:	2016.708333	,cites:	0	,altscore:	14.702	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13783	",time:	2016.708333	,cites:	0	,altscore:	9.58	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13784	",time:	2016.708333	,cites:	0	,altscore:	7.33	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13789	",time:	2016.708333	,cites:	1	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13772	",time:	2016.75	,cites:	0	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13793	",time:	2016.75	,cites:	0	,altscore:	2.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13807	",time:	2016.75	,cites:	0	,altscore:	6.9	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13795	",time:	2016.75	,cites:	0	,altscore:	21.86	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13796	",time:	2016.75	,cites:	0	,altscore:	13.73	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13802	",time:	2016.75	,cites:	0	,altscore:	1.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13806	",time:	2016.75	,cites:	0	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13826	",time:	2016.75	,cites:	0	,altscore:	3.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13799	",time:	2016.75	,cites:	0	,altscore:	5.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13804	",time:	2016.75	,cites:	0	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13800	",time:	2016.75	,cites:	0	,altscore:	21.15	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13778	",time:	2016.75	,cites:	0	,altscore:	1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13798	",time:	2016.75	,cites:	0	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13809	",time:	2016.75	,cites:	0	,altscore:	13.55	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13832	",time:	2016.75	,cites:	0	,altscore:	13.68	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13808	",time:	2016.75	,cites:	1	,altscore:	13.722	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13725	",time:	2016.75	,cites:	3	,altscore:	3.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13810	",time:	2016.791667	,cites:	0	,altscore:	3.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13819	",time:	2016.791667	,cites:	0	,altscore:	4.45	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13822	",time:	2016.791667	,cites:	0	,altscore:	11.05	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13794	",time:	2016.791667	,cites:	0	,altscore:	2	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13811	",time:	2016.791667	,cites:	0	,altscore:	15.48	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13830	",time:	2016.791667	,cites:	0	,altscore:	2.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13824	",time:	2016.791667	,cites:	0	,altscore:	17	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13815	",time:	2016.791667	,cites:	0	,altscore:	2.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13820	",time:	2016.791667	,cites:	0	,altscore:	13.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13821	",time:	2016.791667	,cites:	0	,altscore:	16	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13827	",time:	2016.791667	,cites:	0	,altscore:	13	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13823	",time:	2016.791667	,cites:	0	,altscore:	0.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13828	",time:	2016.791667	,cites:	0	,altscore:	5.8	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13812	",time:	2016.791667	,cites:	0	,altscore:	3.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13831	",time:	2016.791667	,cites:	0	,altscore:	52.95	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13817	",time:	2016.791667	,cites:	1	,altscore:	7.85	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13841	",time:	2016.833333	,cites:	0	,altscore:	2.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13845	",time:	2016.833333	,cites:	0	,altscore:	31.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13850	",time:	2016.833333	,cites:	0	,altscore:	2.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13853	",time:	2016.833333	,cites:	0	,altscore:	3.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13829	",time:	2016.833333	,cites:	0	,altscore:	31.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13862	",time:	2016.833333	,cites:	0	,altscore:	36.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13833	",time:	2016.833333	,cites:	0	,altscore:	4.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13848	",time:	2016.833333	,cites:	0	,altscore:	13	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13855	",time:	2016.833333	,cites:	0	,altscore:	3.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13859	",time:	2016.833333	,cites:	0	,altscore:	4.1	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13849	",time:	2016.833333	,cites:	0	,altscore:	2.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13854	",time:	2016.833333	,cites:	0	,altscore:	3.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13858	",time:	2016.833333	,cites:	0	,altscore:	10.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13835	",time:	2016.833333	,cites:	0	,altscore:	12.28	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13839	",time:	2016.833333	,cites:	0	,altscore:	5.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13844	",time:	2016.833333	,cites:	0	,altscore:	11.08	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13852	",time:	2016.833333	,cites:	1	,altscore:	13.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13866	",time:	2016.833333	,cites:	1	,altscore:	28.7	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13864	",time:	2016.875	,cites:	0	,altscore:	10.072	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13865	",time:	2016.875	,cites:	0	,altscore:	104.422	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13871	",time:	2016.875	,cites:	0	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13879	",time:	2016.875	,cites:	0	,altscore:	17	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13825	",time:	2016.875	,cites:	0	,altscore:	42.06	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13840	",time:	2016.875	,cites:	0	,altscore:	1.5	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13876	",time:	2016.875	,cites:	0	,altscore:	5.05	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13860	",time:	2016.875	,cites:	0	,altscore:	0.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13773	",time:	2016.875	,cites:	0	,altscore:	10.65	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13874	",time:	2016.875	,cites:	0	,altscore:	12.95	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13872	",time:	2016.875	,cites:	0	,altscore:	5.55	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13877	",time:	2016.875	,cites:	0	,altscore:	9.58	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13753	",time:	2016.875	,cites:	1	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13843	",time:	2016.916667	,cites:	0	,altscore:	1.75	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13890	",time:	2016.916667	,cites:	0	,altscore:	4.6	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13752	",time:	2016.916667	,cites:	0	,altscore:	4.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13888	",time:	2016.916667	,cites:	0	,altscore:	11.25	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13889	",time:	2016.916667	,cites:	0	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13893	",time:	2016.916667	,cites:	0	,altscore:	17.4	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13883	",time:	2016.916667	,cites:	0	,altscore:	2.35	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13886	",time:	2016.916667	,cites:	0	,altscore:	21.13	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.13887	",time:	2016.916667	,cites:	0	,altscore:	0	,openaccess:"	FALSE	",},
+{name:"	10.1111/mec.12624	",time:	2014.083333	,cites:	16	,altscore:	1	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12643	",time:	2014.125	,cites:	7	,altscore:	7.2	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12638	",time:	2014.125	,cites:	16	,altscore:	2.7	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12640	",time:	2014.125	,cites:	23	,altscore:	5.2	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12678	",time:	2014.166667	,cites:	6	,altscore:	3.95	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12672	",time:	2014.166667	,cites:	9	,altscore:	5	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12673	",time:	2014.166667	,cites:	13	,altscore:	5.05	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12703	",time:	2014.25	,cites:	3	,altscore:	0.5	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12594	",time:	2014.25	,cites:	20	,altscore:	0.75	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12710	",time:	2014.291667	,cites:	10	,altscore:	2.25	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12739	",time:	2014.333333	,cites:	9	,altscore:	1.5	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12740	",time:	2014.333333	,cites:	13	,altscore:	12	,openaccess:"	TRUE	",},
+//{name:"	10.1111/mec.12725	",time:	2014.333333	,cites:	121	,altscore:	18.55	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12742	",time:	2014.375	,cites:	16	,altscore:	3.5	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12781	",time:	2014.416667	,cites:	2	,altscore:	1.5	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12768	",time:	2014.416667	,cites:	7	,altscore:	29.75	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12823	",time:	2014.541667	,cites:	7	,altscore:	36.75	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12827	",time:	2014.541667	,cites:	24	,altscore:	14.7	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12845	",time:	2014.625	,cites:	9	,altscore:	3	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12840	",time:	2014.625	,cites:	11	,altscore:	1.5	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12810	",time:	2014.625	,cites:	27	,altscore:	8.7	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12833	",time:	2014.666667	,cites:	7	,altscore:	13.45	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12869	",time:	2014.666667	,cites:	19	,altscore:	2.75	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12881	",time:	2014.708333	,cites:	4	,altscore:	3.85	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12883	",time:	2014.708333	,cites:	20	,altscore:	18.75	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12846	",time:	2014.75	,cites:	8	,altscore:	9.59	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12904	",time:	2014.791667	,cites:	7	,altscore:	6.95	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12932	",time:	2014.833333	,cites:	6	,altscore:	1	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12930	",time:	2014.833333	,cites:	11	,altscore:	1.85	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12929	",time:	2014.833333	,cites:	12	,altscore:	25.3	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12958	",time:	2014.875	,cites:	5	,altscore:	2	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12948	",time:	2014.875	,cites:	13	,altscore:	10.65	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12982	",time:	2014.916667	,cites:	0	,altscore:	0	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12908	",time:	2014.916667	,cites:	3	,altscore:	11.7	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12968	",time:	2014.916667	,cites:	4	,altscore:	9.35	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12978	",time:	2014.916667	,cites:	5	,altscore:	14.25	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.12966	",time:	2014.916667	,cites:	15	,altscore:	1.35	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13054	",time:	2015.083333	,cites:	11	,altscore:	25.96	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13097	",time:	2015.166667	,cites:	6	,altscore:	5.05	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13112	",time:	2015.208333	,cites:	2	,altscore:	3.35	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13113	",time:	2015.208333	,cites:	10	,altscore:	8.45	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13038	",time:	2015.208333	,cites:	12	,altscore:	38.23	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13120	",time:	2015.25	,cites:	5	,altscore:	8.35	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13129	",time:	2015.25	,cites:	16	,altscore:	22.7	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13138	",time:	2015.291667	,cites:	2	,altscore:	1.5	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13146	",time:	2015.291667	,cites:	7	,altscore:	6.35	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13186	",time:	2015.375	,cites:	7	,altscore:	1	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13192	",time:	2015.416667	,cites:	1	,altscore:	5.1	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13197	",time:	2015.416667	,cites:	8	,altscore:	3	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13208	",time:	2015.416667	,cites:	9	,altscore:	3.35	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13221	",time:	2015.458333	,cites:	0	,altscore:	1	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13216	",time:	2015.458333	,cites:	3	,altscore:	10.4	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13160	",time:	2015.458333	,cites:	8	,altscore:	2.1	,openaccess:"	TRUE	",},
+//{name:"	10.1111/mec.13241	",time:	2015.5	,cites:	1	,altscore:	182.104	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13247	",time:	2015.5	,cites:	5	,altscore:	11.1	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13251	",time:	2015.5	,cites:	12	,altscore:	6.2	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13262	",time:	2015.541667	,cites:	2	,altscore:	24.7	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13260	",time:	2015.541667	,cites:	4	,altscore:	2.75	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13253	",time:	2015.541667	,cites:	4	,altscore:	47.7	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13269	",time:	2015.541667	,cites:	10	,altscore:	5.85	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13291	",time:	2015.583333	,cites:	3	,altscore:	27.2	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13307	",time:	2015.625	,cites:	4	,altscore:	12.55	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13308	",time:	2015.625	,cites:	4	,altscore:	5.5	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13300	",time:	2015.625	,cites:	7	,altscore:	3.95	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13317	",time:	2015.666667	,cites:	0	,altscore:	10.25	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13327	",time:	2015.666667	,cites:	3	,altscore:	14.05	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13355	",time:	2015.75	,cites:	0	,altscore:	1.5	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13362	",time:	2015.75	,cites:	2	,altscore:	3.85	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13365	",time:	2015.75	,cites:	2	,altscore:	3.35	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13382	",time:	2015.791667	,cites:	2	,altscore:	3.75	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13403	",time:	2015.833333	,cites:	0	,altscore:	3.35	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13437	",time:	2015.916667	,cites:	0	,altscore:	5.6	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13434	",time:	2015.916667	,cites:	2	,altscore:	16.066	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13520	",time:	2016.125	,cites:	0	,altscore:	4	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13540	",time:	2016.166667	,cites:	1	,altscore:	4.75	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13567	",time:	2016.208333	,cites:	0	,altscore:	6.45	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13571	",time:	2016.25	,cites:	0	,altscore:	4.7	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13607	",time:	2016.333333	,cites:	0	,altscore:	0.5	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13596	",time:	2016.333333	,cites:	0	,altscore:	11.55	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13670	",time:	2016.458333	,cites:	0	,altscore:	63.6	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13650	",time:	2016.5	,cites:	0	,altscore:	3.35	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13681	",time:	2016.5	,cites:	0	,altscore:	5.15	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13640	",time:	2016.5	,cites:	0	,altscore:	0.25	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13554	",time:	2016.5	,cites:	0	,altscore:	53.03	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13675	",time:	2016.541667	,cites:	0	,altscore:	7.65	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13673	",time:	2016.541667	,cites:	0	,altscore:	0.5	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13636	",time:	2016.541667	,cites:	1	,altscore:	6.9	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13771	",time:	2016.666667	,cites:	0	,altscore:	2	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13759	",time:	2016.666667	,cites:	0	,altscore:	2.25	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13746	",time:	2016.666667	,cites:	0	,altscore:	1.25	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13761	",time:	2016.666667	,cites:	0	,altscore:	14.63	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13762	",time:	2016.666667	,cites:	1	,altscore:	6.55	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13797	",time:	2016.75	,cites:	0	,altscore:	37.7	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13803	",time:	2016.75	,cites:	1	,altscore:	15.08	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13813	",time:	2016.791667	,cites:	0	,altscore:	43.85	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13769	",time:	2016.791667	,cites:	0	,altscore:	5.7	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13856	",time:	2016.833333	,cites:	0	,altscore:	0.25	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13857	",time:	2016.833333	,cites:	0	,altscore:	7.65	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13882	",time:	2016.875	,cites:	0	,altscore:	1.35	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13878	",time:	2016.916667	,cites:	0	,altscore:	25.68	,openaccess:"	TRUE	",},
+{name:"	10.1111/mec.13896	",time:	2016.916667	,cites:	0	,altscore:	0.25	,openaccess:"	TRUE	",},
+]
+
+var timeArray = [];
+var citesArray = [];
+var altscoreArray = [];
+var openaccessArray = [];
+var TwoOnesArray = [];
+var TwoTwosArray = [];
+var OtherHonsArray = [];
+var OrdinaryArray = [];
+var NotClassifiedArray = [];
+
+for (var i = 0; i<dataset.length;i++){
+  citesArray[i] = dataset[i].cites
+  timeArray[i] = dataset[i].time
+  altscoreArray[i] = dataset[i].altscore
+  openaccessArray[i] = dataset[i].openaccess
+  TwoOnesArray[i] = dataset[i].TwoOnes
+  TwoTwosArray[i] = dataset[i].TwoTwos
+  OtherHonsArray[i] = dataset[i].OtherHons
+  OrdinaryArray[i] = dataset[i].Ordinary
+  NotClassifiedArray[i] = dataset[i].NotClassified
+}
+
+var xScale = d3.scale.linear()
+ .domain([d3.min(timeArray),d3.max(timeArray)])
+  .range([padding,w-padding]);
+
+var x2scale = d3.scale.pow()
+  .exponent(1)
+  .domain([d3.min(altscoreArray),d3.max(altscoreArray)])
+  .range([padding,w-padding]);
+
+var yScale = d3.scale.pow()
+ .exponent(1)
+ .domain([d3.min(altscoreArray),d3.max(altscoreArray)])
+  .range([h-padding,padding]);
+
+var y2Scale = d3.scale.linear()
+  .domain([d3.min(citesArray),d3.max(citesArray)])
+  .range([h-padding,padding]);
+
+var rScale = d3.scale.linear()
+ .domain([d3.min(altscoreArray),d3.max(altscoreArray)])
+  .range([10,50]);
+
+//set range using variable for transistions
+//automate domain from data
+var colourScale = d3.scale.ordinal()
+  .domain([	"TRUE"	,	"FALSE"	])
+  .range(['#f8766d','#00bfc4']);
+
+var svg = d3.select('body')
+  .append('svg')
+  .attr('width',w)
+  .attr('height',h);
+
+var xAxis = d3.svg.axis()
+  .scale(xScale)
+  .orient("bottom")
+  .ticks(3);
+
+var x2Axis = d3.svg.axis()
+  .scale(x2scale)
+  .orient("bottom")
+  .ticks(5);
+
+var yAxis = d3.svg.axis()
+  .scale(yScale)
+  .orient('left');
+
+var y2Axis = d3.svg.axis()
+  .scale(y2Scale)
+  .orient('left');
+
+var point = svg.selectAll('g')
+  .data(dataset)
+  .enter()
+  .append('g')
+  .on('mouseover', function(d){
+    d3.select(this).selectAll('text')
+    .attr('opacity',1)
+  })
+  .on('mouseout',function(d){
+    d3.select(this).selectAll('text')
+    .transition()
+    .duration(100)
+    .attr('opacity',0)
+  })
+
+var circles = point.append('circle')
+  .attr('cx',function(d){
+  return xScale(d.time)
+})
+  .attr('cy',function(d){
+  return y2Scale(d.cites)
+})
+/*  .attr('r',function(d){
+  return rScale(d.altscore)
+})*/
+    .attr('r',8)
+  .attr('fill', function(d){
+  return colourScale(d.openaccess)
+})
+  .attr('opacity', 0.8);
+
+point.append('text')
+  .html(function(d){
+  return d.name
+})
+  .attr('x',function(d){
+  return w/2
+})
+  .attr('y',function(d){
+  return h/4
+})
+  .attr('text-anchor', 'middle')
+  .attr('opacity', 0)
+  .attr('class','Name');
+
+var xLine = svg.append('g')
+  .attr('class', 'axis')
+  .attr("transform", "translate(0," + (h - padding) + ")")
+  .call(xAxis)
+
+var xLineText = svg.append('text')
+  .text('Year of publication')
+  .attr('x', function(d){
+  return xScale(d3.min(timeArray)+(d3.max(timeArray)-d3.min(timeArray))/2)
+})
+  .attr('y',h-padding+40)
+  .attr('text-anchor', 'middle')
+  .attr('class', 'lab')
+
+var x2Line = svg.append('g')
+  .attr('class', 'axis')
+  .attr("transform", "translate(0," + (h - padding) + ")")
+  .call(x2Axis)
+  .attr('opacity',0)
+
+var x2LineText = svg.append('text')
+  .text('Altmetric Score')
+  .attr('x', function(d){
+  return xScale(d3.min(timeArray)+(d3.max(timeArray)-d3.min(timeArray))/2)
+})
+  .attr('y',h-padding+40)
+  .attr('text-anchor', 'middle')
+  .attr('class', 'lab')
+  .attr('opacity', 0)
+
+var yLine = svg.append('g')
+  .attr('class','axis')
+  .call(yAxis)
+  .attr('transform', 'translate('+ padding + ',0)')
+  .attr('opacity', 0)
+
+var yLineText = svg.append('text')
+  .text('Altmetric Score')
+  .attr('x',function(d){
+  return -(h/2)
+})
+  .attr('y', padding - 40)
+  .attr('transform', 'rotate(-90)')
+  .attr('text-anchor', 'middle')
+  .attr('opacity', 0)
+
+var yLine2 = svg.append('g')
+  .attr('class','axis')
+  .call(y2Axis)
+  .attr('transform', 'translate('+ padding + ',0)')
+
+var yLine2Text = svg.append('text')
+  .text('Citations')
+  .attr('x',function(d){
+  return -(h/2)
+})
+  .attr('y', padding - 40)
+  .attr('transform', 'rotate(-90)')
+  .attr('text-anchor', 'middle')
+  
+
+var y1x1button = svg.append('rect')
+  .attr('x', 5)
+  .attr('y', 32)
+  .attr('height', 20)
+  .attr('width', 20)
+  .on("click", function(){
+  circles.transition()
+    .attr('cy',function(d){
+  return y2Scale(d.cites)})
+    .attr('cx',function(d){
+  return xScale(d.time)
+})
+
+  yLine.transition()
+    .attr('opacity', 0)
+  yLineText.transition()
+    .attr('opacity', 0)
+  yLine2.transition()
+    .attr('opacity', 1)
+  yLine2Text.transition()
+    .attr('opacity', 1)
+  xLine.transition()
+    .attr('opacity', 1)
+  xLineText.transition()
+    .attr('opacity', 1)
+  x2Line.transition()
+    .attr('opacity', 0)
+  x2LineText.transition()
+    .attr('opacity', 0)
+})
+  .on("mouseover", function(d) {
+    d3.select(this)
+    .attr("opacity","0.6")
+    })
+
+  .on("mouseout", function(d,i) {
+    d3.select(this)
+  .attr("opacity","1")
+  })
+
+svg.append('text')
+.text('Citations')
+.attr('x',27)
+.attr('y',50)
+
+
+var y2x1button = svg.append('rect')
+  .attr('x', 5)
+  .attr('y', 55)
+  .attr('height', 20)
+  .attr('width', 20)
+  .on("click", function(){
+  circles.transition()
+  .attr('cy',function(d){
+  return yScale(d.altscore)
+})
+    .attr('cx',function(d){
+  return xScale(d.time)
+})
+    yLine.transition()
+    .attr('opacity', 1)
+  yLineText.transition()
+    .attr('opacity', 1)
+  yLine2.transition()
+    .attr('opacity', 0)
+  yLine2Text.transition()
+    .attr('opacity', 0)
+        xLine.transition()
+    .attr('opacity', 1)
+  xLineText.transition()
+    .attr('opacity', 1)
+  x2Line.transition()
+    .attr('opacity', 0)
+  x2LineText.transition()
+    .attr('opacity', 0)
+})
+  .on("mouseover", function(d) {
+    d3.select(this)
+    .attr("opacity","0.6")
+    })
+
+  .on("mouseout", function(d,i) {
+    d3.select(this)
+  .attr("opacity","1")
+  })
+  
+svg.append('text')
+.text('Altmetric')
+.attr('x',27)
+.attr('y',73)
+
+var y1x2button = svg.append('rect')
+  .attr('x', 5)
+  .attr('y', 78)
+  .attr('height', 20)
+  .attr('width', 20)
+  .attr('fill', 'black')
+  .on("click", function(){
+  circles.transition()
+  .attr("cx",function(d){
+  return x2scale(d.altscore)
+})
+    .attr('cy',function(d){
+  return y2Scale(d.cites)
+  })
+    yLine.transition()
+    .attr('opacity', 0)
+  yLineText.transition()
+    .attr('opacity', 0)
+  yLine2.transition()
+    .attr('opacity', 1)
+  yLine2Text.transition()
+    .attr('opacity', 1)
+    xLine.transition()
+    .attr('opacity', 0)
+  xLineText.transition()
+    .attr('opacity', 0)
+  x2Line.transition()
+    .attr('opacity', 1)
+  x2LineText.transition()
+    .attr('opacity', 1)
+  })
+    .on("mouseover", function(d) {
+    d3.select(this)
+    .attr("opacity","0.6")
+    })
+
+  .on("mouseout", function(d,i) {
+    d3.select(this)
+  .attr("opacity","1")
+  })
+  
+svg.append('text')
+.text('Citations vs Altmetric')
+.attr('x',27)
+.attr('y',96)
+
+
+</script>
+<div id="foot" class="w3-dark-grey w3-hover-black">
+
+<!--Twitter button-->
+<a href="https://twitter.com/suchalilnerd" class="twitter-follow-button" data-show-count="false">Follow @suchalilnerd</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+</body>
+</html>
+

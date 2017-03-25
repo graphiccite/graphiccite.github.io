@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Boat Race</title>
+<link rel="stylesheet" href="../w3.css">
+<link rel="stylesheet" href="../graphiccite.css">
+<script src="../d3.v3.min.js"  charset="utf-8"></script>
+<link rel="icon" sizes="16x16 32x32 48x48 64x64" href="../images/favicon.ico">
+</head>
+<body class="w3-animate-opacity">
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+  <ul class="w3-navbar" id="myNavbar">
+    <li><a href="#" class="w3-padding-large">TOP</a></li>
+    <li><a href="../index.html" class="w3-padding-large">HOME</a></li>
+
+  </ul>
+</div>
+<script>
+// Change style of navbar on scroll
+window.onscroll = function() {myFunction()};
+function myFunction() {
+    var navbar = document.getElementById("myNavbar");
+    if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+        navbar.className = "w3-navbar" + " w3-card-2" + " w3-animate-top" + " w3-white";
+    } else {
+        navbar.className = navbar.className.replace(" w3-card-2 w3-animate-top w3-white", "");
+    }
+}
+</script>
+<div id = "top">    <a href="../index.html"> <span class="w3-center w3-padding-xlarge w3-dark-grey w3-xlarge w3-wide w3-animate-opacity">GRAPHIC <span class="w3-hide-small">CITE</span> </span></a>
+
+<!--Twitter button-->
+<a href="https://twitter.com/suchalilnerd" class="twitter-follow-button" data-show-count="false">Follow @suchalilnerd</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+
+<div class= "descript">
+<h1>The Boat Race</h1>
+<p>The Boat races button shows wins over the last 200ish years</p>
+<p>College founding shows the university timelines</p>
+<p>And College money shows how rich and how many students the colleges have</p>
+</div>
+<script>
+var w = 800;
+var h = 600;
+var padding = 100;
+
+var win_data_men = [
+  {winner:"	 Oxford	",year:	1829	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1836	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1839	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1840	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1841	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1842	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1845	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1846	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1849	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1849	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1852	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1854	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1856	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1857	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1858	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1859	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1860	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1861	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1862	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1863	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1864	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1865	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1866	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1867	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1868	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1869	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1870	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1871	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1872	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1873	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1874	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1875	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1876	,ox_total:0,cam_total:0,},
+//{winner:"	Dead Heat	",year:	1877	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1878	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1879	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1880	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1881	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1882	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1883	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1884	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1885	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1886	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1887	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1888	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1889	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1890	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1891	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1892	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1893	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1894	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1895	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1896	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1897	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1898	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1899	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1900	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1901	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1902	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1903	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1904	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1905	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1906	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1907	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1908	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1909	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1910	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1911	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1912	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1913	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1914	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1920	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1921	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1922	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1923	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1924	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1925	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1926	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1927	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1928	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1929	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1930	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1931	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1932	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1933	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1934	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1935	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1936	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1937	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1938	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1939	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1946	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1947	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1948	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1949	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1950	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1951	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1952	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1953	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1954	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1955	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1956	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1957	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1958	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1959	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1960	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1961	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1962	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1963	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1964	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1965	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1966	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1967	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1968	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1969	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1970	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1971	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1972	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1973	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1974	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1975	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1976	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1977	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1978	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1979	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1980	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1981	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1982	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1983	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1984	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1985	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1986	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1987	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1988	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1989	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1990	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1991	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	1992	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1993	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1994	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1995	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1996	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1997	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1998	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	1999	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	2000	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	2001	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	2002	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	2003	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	2004	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	2005	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	2006	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	2007	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	2008	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	2009	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	2010	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	2011	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	2012	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	2013	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	2014	,ox_total:0,cam_total:0,},
+{winner:"	 Oxford	",year:	2015	,ox_total:0,cam_total:0,},
+{winner:"	 Cambridge	",year:	2016	,ox_total:0,cam_total:0,},
+]
+var win_data_women=[
+{winner:"	 Oxford	",year:	1927	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1929	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1930	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	1934	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	1935	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	1936	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	1937	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	1939	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	1941	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1942	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1944	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1945	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1946	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1948	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	1949	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	1950	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	1951	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1952	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1964	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1965	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1966	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1967	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1968	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1969	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1970	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1971	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1972	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1973	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1974	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1975	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	1976	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1977	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1978	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1979	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	1980	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	1981	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1982	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1983	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1984	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	1985	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	1986	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1987	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	1988	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1989	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1990	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	1991	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1992	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1993	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1994	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1995	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1996	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1997	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1998	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	1999	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	2000	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	2001	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	2002	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	2003	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	2004	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	2005	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	2006	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	2007	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	2008	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	2009	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	2010	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	2011	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Cambridge	",year:	2012	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	2013	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	2014	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	2015	,ox_win_total:0,cam_win_total:0},
+{winner:"	 Oxford	",year:	2016	,ox_win_total:0,cam_win_total:0},
+]
+
+var races = win_data_men.length
+var win_year_array = [];
+
+for (var i = 0; i < win_data_men.length; i++){
+  win_year_array[i] = win_data_men[i].year
+};
+
+var ox_men_win = 0;
+var cam_men_win= 0;
+
+var current_leader = "	 Cambridge	"
+
+for (var i = 0; i<win_data_men.length;i++){
+  if (win_data_men[i].winner === "	 Oxford	") {
+	 ox_men_win +=1
+   win_data_men[i].ox_total = ox_men_win}	
+ else if(win_data_men[i].winner === "	 Cambridge	"){
+   cam_men_win += 1
+   win_data_men[i].cam_total = cam_men_win}
+};
+
+var ox_women_win=0;
+var cam_women_win=0;
+
+for (var i=0; i<win_data_women.length;i++){
+  if(win_data_women[i].winner==="	 Oxford	"){
+    ox_women_win +=1
+    win_data_women[i].ox_win_total=ox_women_win}
+  else if(win_data_women[i].winner==="	 Cambridge	"){
+    cam_women_win += 1
+    win_data_women[i].cam_win_total = cam_women_win}
+};
+
+var win_year_scale = d3.scale.ordinal()
+  .domain(["	Oxford	","	Cambridge	"])
+  .range(['#034896','#62DEC1']);
+
+var win_scale = d3.scale.linear()
+  .domain([0,cam_men_win])
+  .range([h-padding,padding]);
+
+var win_time_scale = d3.scale.linear()
+  .domain([d3.min(win_year_array),d3.max(win_year_array)])
+  .range([padding,w-padding])
+
+var svg = d3.select('body')
+  .append('svg')
+  .attr('width', w)
+  .attr('height', h)
+  .attr('class','stage');
+
+var test = svg.selectAll('g')
+  .data(win_data_men)
+  .enter()
+  .append('g');
+
+var test_box = test.append('rect')
+  .attr('width', 20)
+  .attr('height', function(d){
+    return ((h-2*padding)/cam_men_win)
+  })
+  .attr('y',function(d){
+    if(d.winner==="	 Oxford	"){
+    return h-padding-((h-2*padding)/cam_men_win)*(d.ox_total)
+  }else if (d.winner==="	 Cambridge	"){
+    return h-padding-((h-2*padding)/cam_men_win)*(d.cam_total)
+  }})
+  .attr('x', function(d){
+return win_time_scale(d.year)
+  })
+  .attr('fill', function(d){
+    return win_year_scale(d.winner)
+  })
+  .attr('opacity',0);
+
+var test_women = svg.selectAll('women_results')
+  .data(win_data_women)
+  .enter()
+  .append('g');
+
+var test_box_women = test_women.append('rect')
+  .attr('width', 20)
+  .attr('height', function(d){
+    return ((h-2*padding)/cam_men_win)
+  })
+  .attr('y',function(d){
+    if(d.winner==="	 Oxford	"){
+    return h-padding-((h-2*padding)/cam_men_win)*(d.ox_win_total)
+  }else if (d.winner==="	 Cambridge	"){
+    return h-padding-((h-2*padding)/cam_men_win)*(d.cam_win_total)
+  }})
+  .attr('x', function(d){
+return win_time_scale(d.year)
+  })
+  .attr('fill', function(d){
+    return win_year_scale(d.winner)
+  })
+  .attr('opacity',0);
+
+var win_time_axis = d3.svg.axis()
+  .scale(win_time_scale)
+  .orient('bottom')
+var win_time_line = svg.append('g')
+  .attr('class', 'axis')
+  .attr("transform", "translate(0," + (h - padding) + ")")
+  .call(win_time_axis)
+
+var y_win_axis = d3.svg.axis()
+  .scale(win_scale)
+  .orient('left');
+
+var y_win_line = svg.append('g')
+  .attr('class','axis')
+  .call(y_win_axis)
+  .attr('transform', 'translate('+ padding + ',0)')
+  .attr('opacity', 1)
+
+var y_win_text = svg.append('text')
+  .text('Boat Race Wins')
+  .attr('x',function(d){
+  return -(h/2)
+})
+  .attr('y', padding - 40)
+  .attr('transform', 'rotate(-90)')
+  .attr('text-anchor', 'middle')
+  .attr('opacity', 1)
+
+svg.append('text')
+.text('Boat races')
+.attr('x',w-150)
+.attr('y',220)
+
+var race_button = svg.append('rect')
+.attr("class","button")
+  .attr('y',h-370)
+  .attr('x',w-40)
+  .attr('width', 20)
+  .attr('height',20)
+  .on("click", function(){
+  test_box.transition()
+  .delay(function(d,i){
+    return 100*i
+  })
+  .duration(300)
+    .attr('opacity',1)
+  test_box_women.transition()
+  .delay(function(d,i){
+    return 8300+100*i
+  })
+  .duration(300)
+  .attr('opacity',1)
+  y_win_text.transition()
+  .attr('opacity',1)
+   y_win_line.transition()
+  .attr('opacity',1)
+  yLineText.transition()
+  .attr('opacity',0)
+   yLineRawText.transition()
+  .attr('opacity',0)   
+  yLine.transition()
+  .attr('opacity',0)
+   yLineRaw.transition()
+  .attr('opacity',0)
+  test.transition()
+  .duration(1000)
+  .attr('opacity',1)
+  .attr('transform','rotate(0)')
+  test_women.transition()
+  .duration(1000)
+  .attr('opacity',1)
+  .attr('transform','rotate(0)')
+  point.transition()
+  .duration(1000)
+  .attr('opacity',0)
+  .attr('transform','rotate(-45)')
+  college_year.transition()
+  .attr('opacity',0)
+  win_time_line.transition()
+  .attr('opacity',1)
+  });
+/*
+var college_button = svg.append('rect')
+  .attr('x',w-padding)
+  .attr('y',30)
+  .attr('width',20)
+  .attr('height',20)
+  .on("click",function(){
+    test.transition()
+    .duration(1000)
+    .attr('opacity',0)
+    .attr('transform','rotate(-45)')
+    point.transition()
+    .duration(1000)
+    .attr('opacity',1)
+    .attr('transform','rotate(0)')
+  });*/
+/*
+var win_length_button = svg.append('rect')
+  .attr('width',10)
+  .attr('height',10)
+  .attr('x',70)
+  .on('click',function(){
+    test_box.transition()
+    .attr('x',function(d){
+        if (d.winner==="	 Oxford	"){
+          return 50
+      } else if(d.winner==="	 Cambridge	"){
+          return 100
+      }})
+    
+  })
+*/
+/*
+var win_time_button = svg.append('rect')
+  .attr('width',10)
+  .attr('height',10)
+  .attr('x',90)
+  .on('click',function(){
+    test_box.transition()
+    .attr('x',function(d){
+      return win_time_scale(d.year)
+    })
+  })
+*/
+///////////////////////////////////////
+
+var dataset = [
+  {College:"	St Edmund Hall	",Founded:	1226	,nth_College:0,Population:	678	,University:"	Oxford	",money:	46314000	,},
+{College:"	University College	",Founded:	1249	,nth_College:0,Population:	593	,University:"	Oxford	",money:	130898000	,},
+{College:"	Balliol	",Founded:	1263	,nth_College:0,Population:	714	,University:"	Oxford	",money:	101564000	,},
+{College:"	Merton College	",Founded:	1264	,nth_College:0,Population:	545	,University:"	Oxford	",money:	250448000	,},
+{College:"	Hertford College	",Founded:	1282	,nth_College:0,Population:	624	,University:"	Oxford	",money:	57454000	,},
+{College:"	Peterhouse	",Founded:	1284	,nth_College:0,Population:	370	,University:"	Cambridge	",money:	271052000	,},
+{College:"	Exeter College	",Founded:	1314	,nth_College:0,Population:	580	,University:"	Oxford	",money:	68650000	,},
+{College:"	Oriel College	",Founded:	1326	,nth_College:0,Population:	489	,University:"	Oxford	",money:	48288000	,},
+{College:"	Clare	",Founded:	1326	,nth_College:0,Population:	655	,University:"	Cambridge	",money:	138494000	,},
+{College:"	The Queen's College	",Founded:	1341	,nth_College:0,Population:	466	,University:"	Oxford	",money:	201368000	,},
+{College:"	Pembroke	",Founded:	1347	,nth_College:0,Population:	597	,University:"	Cambridge	",money:	135332773	,},
+{College:"	Gonville and Caius	",Founded:	1348	,nth_College:0,Population:	719	,University:"	Cambridge	",money:	185343378	,},
+{College:"	Trinity Hall	",Founded:	1350	,nth_College:0,Population:	580	,University:"	Cambridge	",money:	223677179	,},
+{College:"	Corpus Christi	",Founded:	1352	,nth_College:0,Population:	467	,University:"	Cambridge	",money:	209187829	,},
+{College:"	New College	",Founded:	1379	,nth_College:0,Population:	744	,University:"	Oxford	",money:	205955000	,},
+{College:"	Lincoln College	",Founded:	1427	,nth_College:0,Population:	580	,University:"	Oxford	",money:	128644000	,},
+{College:"	Magdalene	",Founded:	1428	,nth_College:0,Population:	493	,University:"	Cambridge	",money:	98702257	,},
+{College:"	All Souls College	",Founded:	1438	,nth_College:0,Population:	6	,University:"	Oxford	",money:	356029000	,},
+{College:"	King's	",Founded:	1441	,nth_College:0,Population:	581	,University:"	Cambridge	",money:	179656000	,},
+{College:"	Queens'	",Founded:	1448	,nth_College:0,Population:	832	,University:"	Cambridge	",money:	90204100	,},
+{College:"	Magdalen College	",Founded:	1458	,nth_College:0,Population:	573	,University:"	Oxford	",money:	227179000	,},
+{College:"	St Catharine's	",Founded:	1473	,nth_College:0,Population:	621	,University:"	Cambridge	",money:	97395000	,},
+{College:"	Jesus	",Founded:	1496	,nth_College:0,Population:	704	,University:"	Cambridge	",money:	276509040	,},
+{College:"	Christ's	",Founded:	1505	,nth_College:0,Population:	541	,University:"	Cambridge	",money:	149700000	,},
+{College:"	Brasenose College	",Founded:	1509	,nth_College:0,Population:	573	,University:"	Oxford	",money:	127464000	,},
+{College:"	St John's	",Founded:	1511	,nth_College:0,Population:	831	,University:"	Cambridge	",money:	700545000	,},
+{College:"	Corpus Christi College	",Founded:	1517	,nth_College:0,Population:	352	,University:"	Oxford	",money:	99504000	,},
+{College:"	Christ Church	",Founded:	1546	,nth_College:0,Population:	593	,University:"	Oxford	",money:	436144000	,},
+{College:"	Trinity College	",Founded:	1546	,nth_College:0,Population:	1030	,University:"	Cambridge	",money:	1028272000	,},
+{College:"	St John's College	",Founded:	1555	,nth_College:0,Population:	607	,University:"	Oxford	",money:	470857000	,},
+{College:"	Trinity College	",Founded:	1555	,nth_College:0,Population:	410	,University:"	Oxford	",money:	126300000	,},
+{College:"	Jesus College	",Founded:	1571	,nth_College:0,Population:	526	,University:"	Oxford	",money:	148872000	,},
+{College:"	Emmanuel	",Founded:	1584	,nth_College:0,Population:	633	,University:"	Cambridge	",money:	187978472	,},
+{College:"	Sidney Sussex	",Founded:	1596	,nth_College:0,Population:	506	,University:"	Cambridge	",money:	110295436	,},
+{College:"	Wadham College	",Founded:	1610	,nth_College:0,Population:	607	,University:"	Oxford	",money:	109099000	,},
+{College:"	Pembroke College	",Founded:	1624	,nth_College:0,Population:	576	,University:"	Oxford	",money:	83474000	,},
+{College:"	Worcester College	",Founded:	1714	,nth_College:0,Population:	609	,University:"	Oxford	",money:	31793000	,},
+{College:"	Homerton	",Founded:	1768	,nth_College:0,Population:	1181	,University:"	Cambridge	",money:	138417093	,},
+{College:"	Harris Manchester College	",Founded:	1786	,nth_College:0,Population:	216	,University:"	Oxford	",money:	15329000	,},
+{College:"	Downing	",Founded:	1800	,nth_College:0,Population:	623	,University:"	Cambridge	",money:	149404000	,},
+{College:"	Fitzwilliam	",Founded:	1869	,nth_College:0,Population:	688	,University:"	Cambridge	",money:	79124000	,},
+{College:"	Girton	",Founded:	1869	,nth_College:0,Population:	677	,University:"	Cambridge	",money:	123338000	,},
+{College:"	Keble College	",Founded:	1870	,nth_College:0,Population:	673	,University:"	Oxford	",money:	54643000	,},
+{College:"	Newnham	",Founded:	1871	,nth_College:0,Population:	524	,University:"	Cambridge	",money:	156451793	,},
+{College:"	Lady Margaret Hall	",Founded:	1878	,nth_College:0,Population:	627	,University:"	Oxford	",money:	52276000	,},
+{College:"	St Anne's College	",Founded:	1878	,nth_College:0,Population:	739	,University:"	Oxford	",money:	45945000	,},
+{College:"	Somerville College	",Founded:	1879	,nth_College:0,Population:	525	,University:"	Oxford	",money:	56635000	,},
+{College:"	Selwyn	",Founded:	1882	,nth_College:0,Population:	518	,University:"	Cambridge	",money:	94953363	,},
+{College:"	Hughes Hall	",Founded:	1885	,nth_College:0,Population:	419	,University:"	Cambridge	",money:	3224988	,},
+{College:"	Mansfield College	",Founded:	1886	,nth_College:0,Population:	352	,University:"	Oxford	",money:	16707000	,},
+{College:"	St Hugh's College	",Founded:	1886	,nth_College:0,Population:	686	,University:"	Oxford	",money:	41685000	,},
+{College:"	St Hilda's College	",Founded:	1893	,nth_College:0,Population:	585	,University:"	Oxford	",money:	45278000	,},
+{College:"	St Edmund's	",Founded:	1896	,nth_College:0,Population:	331	,University:"	Cambridge	",money:	12718047	,},
+{College:"	St Peter's College	",Founded:	1929	,nth_College:0,Population:	476	,University:"	Oxford	",money:	29988000	,},
+{College:"	Nuffield College	",Founded:	1937	,nth_College:0,Population:	95	,University:"	Oxford	",money:	153253000	,},
+{College:"	St Antony's College	",Founded:	1950	,nth_College:0,Population:	434	,University:"	Oxford	",money:	44734000	,},
+{College:"	Murray Edwards	",Founded:	1954	,nth_College:0,Population:	442	,University:"	Cambridge	",money:	74812930	,},
+{College:"	Churchill	",Founded:	1960	,nth_College:0,Population:	704	,University:"	Cambridge	",money:	143795000	,},
+{College:"	Linacre College	",Founded:	1962	,nth_College:0,Population:	437	,University:"	Oxford	",money:	24377000	,},
+{College:"	St Catherine's College	",Founded:	1963	,nth_College:0,Population:	799	,University:"	Oxford	",money:	58041000	,},
+{College:"	Darwin	",Founded:	1964	,nth_College:0,Population:	674	,University:"	Cambridge	",money:	47629759	,},
+{College:"	St Cross College	",Founded:	1965	,nth_College:0,Population:	534	,University:"	Oxford	",money:	13100000	,},
+{College:"	Lucy Cavendish	",Founded:	1965	,nth_College:0,Population:	220	,University:"	Cambridge	",money:	23825000	,},
+{College:"	Wolfson	",Founded:	1965	,nth_College:0,Population:	504	,University:"	Cambridge	",money:	33171000	,},
+{College:"	Wolfson College	",Founded:	1966	,nth_College:0,Population:	548	,University:"	Oxford	",money:	45764000	,},
+{College:"	Clare Hall	",Founded:	1966	,nth_College:0,Population:	155	,University:"	Cambridge	",money:	14219450	,},
+{College:"	Robinson	",Founded:	1977	,nth_College:0,Population:	495	,University:"	Cambridge	",money:	82112000	,},
+{College:"	Kellogg College	",Founded:	1990	,nth_College:0,Population:	795	,University:"	Oxford	",money:	0	,},
+{College:"	Green Templeton College	",Founded:	2008	,nth_College:0,Population:	522	,University:"	Oxford	",money:	49192000	,},
+]
+
+var FoundedArray = [];
+var nth_CollegeArray = [];
+var PopulationArray = [];
+var moneyArray = [];
+
+var ox_college_total= 0;
+var cam_college_total=0;
+
+for (var i = 0; i<dataset.length; i++){
+   if(dataset[i].University === "	Oxford	"){
+    ox_college_total += 1
+    dataset[i].nth_College = ox_college_total
+  }else if(dataset[i].University === "	Cambridge	"){
+    cam_college_total += 1
+    dataset[i].nth_College = cam_college_total}
+};
+
+for (var i = 0; i<dataset.length;i++){
+  nth_CollegeArray[i] = dataset[i].nth_College
+  FoundedArray[i] = dataset[i].Founded
+  PopulationArray[i] = dataset[i].Population
+  moneyArray[i] = dataset[i].money
+};
+
+var xScale = d3.scale.linear()
+ .domain([d3.min(FoundedArray)-1,d3.max(FoundedArray)])
+  .range([padding,w-padding]);
+
+var yScale = d3.scale.linear()
+//.domain([0,400000000])
+  .domain([d3.min(moneyArray),d3.max(moneyArray)])
+  .range([h-padding,padding]);
+
+var yRawScale = d3.scale.linear()
+  .domain([0,40])
+  .range([h-padding,padding]);
+
+var rScale = d3.scale.linear()
+  .domain([d3.min(PopulationArray),d3.max(PopulationArray)])
+  .range([1,15]);
+
+//set range using variable for transistions
+//automate domain from data
+var colourScale = d3.scale.ordinal()
+  .domain(["	Oxford	","	Cambridge	"])
+  .range(['#034896','#62DEC1']);
+
+
+var xAxis = d3.svg.axis()
+  .scale(xScale)
+  .orient("bottom");
+
+var yAxis = d3.svg.axis()
+  .scale(yScale)
+  .orient('left');
+
+var yRawAxis = d3.svg.axis()
+  .scale(yRawScale)
+  .orient('left');
+
+var point = svg.selectAll('second_graph')
+  .data(dataset)
+  .enter()
+  .append('g')
+  .attr('opacity',0)
+  .attr('transform','rotate(-45)')
+
+  .on('mouseover', function(d){
+    d3.select(this).selectAll('text')
+    .attr('opacity',1)
+  })
+  .on('mouseout',function(d){
+    d3.select(this).selectAll('text')
+    .transition()
+    .duration(100)
+    .attr('opacity',0)
+  })
+
+var circles = point.append('circle')
+  .attr('cx',function(d){
+  return xScale(d.Founded)
+})
+  .attr('cy',function(d){
+  return yRawScale(d.nth_College)
+})
+  .attr('r',5)
+  .attr('fill', function(d){
+  return colourScale(d.University)
+})
+  .attr('opacity', 1);
+
+point.append('text')
+  .html(function(d){
+  return d.College
+})
+  .attr('x',function(d){
+  return 150
+})
+  .attr('y',function(d){
+  return h/4-25
+})
+  .attr('text-anchor', 'left')
+  .attr('opacity', 0)
+  .attr('class','Name');
+
+point.append('text')
+  .html(function(d){
+if (d.nth_College === 1){
+  return d.nth_College + "st college at " +d.University
+} else if(d.nth_College === 2){
+  return d.nth_College + "nd college at " +d.University
+} else if(d.nth_College === 3){
+  return d.nth_College + "rd college at " +d.University
+} else {
+  return d.nth_College + "th college at " +d.University
+}
+})
+  .attr('x',function(d){
+  return 150
+})
+  .attr('y',function(d){
+  return h/4
+})
+  .attr('text-anchor', 'left')
+  .attr('opacity', 0)
+  .attr('class','Name');
+
+point.append('text')
+  .html(function(d){
+  return "Founded in " + d.Founded
+})
+  .attr('x',function(d){
+  return 150
+})
+  .attr('y',function(d){
+  return h/4+20
+})
+  .attr('text-anchor', 'left')
+  .attr('opacity', 0)
+  .attr('class','Name');
+
+point.append('text')
+  .html(function(d){
+  return d.Population + " Students"
+})
+  .attr('x',function(d){
+  return 150
+})
+  .attr('y',function(d){
+  return h/4 + 40
+})
+  .attr('text-anchor', 'left')
+  .attr('opacity', 0)
+  .attr('class','Name');
+
+point.append('text')
+  .html(function(d){
+  return "Total assets £" + d.money
+})
+  .attr('x',function(d){
+  return 150
+})
+  .attr('y',function(d){
+  return h/4+60
+})
+  .attr('text-anchor', 'left')
+  .attr('opacity', 0)
+  .attr('class','Name');
+
+var college_year = svg.append('g')
+  .attr('class', 'axis')
+  .attr("transform", "translate(0," + (h - padding) + ")")
+  .call(xAxis)
+  .attr('opacity',0)
+
+svg.append('text')
+  .text('Year')
+  .attr('x', w/2)
+  .attr('y',h-padding+40)
+  .attr('text-anchor', 'middle')
+  .attr('class', 'lab')
+
+var yLine = svg.append('g')
+  .attr('class','axis')
+  .call(yAxis)
+  .attr('transform', 'translate('+ padding + ',0)')
+  .attr('opacity', 0)
+
+var yLineText = svg.append('text')
+  .text('College Finances')
+  .attr('x',function(d){
+  return -(h/2)
+})
+  .attr('y', padding - 80)
+  .attr('transform', 'rotate(-90)')
+  .attr('text-anchor', 'middle')
+  .attr('opacity', 0)
+
+var yLineRaw = svg.append('g')
+  .attr('class','axis')
+  .call(yRawAxis)
+  .attr('opacity',0)
+  .attr('transform', 'translate('+ padding + ',0)')
+
+var yLineRawText = svg.append('text')
+  .text('Number of Colleges')
+  .attr('x',function(d){
+  return -(h/2)
+})
+  .attr('y', padding - 40)
+  .attr('opacity',0)
+  .attr('transform', 'rotate(-90)')
+  .attr('text-anchor', 'middle')
+  
+
+var Raw = svg.append('rect')
+.attr("class","button")
+  .attr('x', w-40)
+  .attr('y', h-300)
+  .attr('height', 20)
+  .attr('width', 20)
+  .on("click", function(){
+  circles.transition()
+    .attr('cy',function(d){
+  return yRawScale(d.nth_College)
+})
+  .attr('r',5)
+  y_win_line.transition()
+  .attr('opacity',0)
+  y_win_text.transition()
+  .attr('opacity',0)
+  yLine.transition()
+    .attr('opacity', 0)
+  yLineText.transition()
+    .attr('opacity', 0)
+  yLineRaw.transition()
+    .attr('opacity', 1)
+  yLineRawText.transition()
+    .attr('opacity', 1)
+    college_year.transition()
+  .attr('opacity',1)
+  win_time_line.transition()
+  .attr('opacity',0)
+    test.transition()
+    .duration(1000)
+    .attr('opacity',0)
+    .attr('transform','rotate(-45)')
+    test_women.transition()
+    .duration(1000)
+    .attr('opacity',0)
+    .attr('transform','rotate(-45)')
+    point.transition()
+    .duration(1000)
+    .attr('opacity',1)
+    .attr('transform','rotate(0)')
+})
+svg.append('text')
+.text('College Founding')
+.attr('x',w-150)
+.attr('y',h-305)
+
+
+var Adjusted = svg.append('rect')
+.attr("class","button")
+  .attr('x', w-40)
+  .attr('y', h-260)
+  .attr('height', 20)
+  .attr('width', 20)
+  .on("click", function(){
+  circles.transition()
+  .attr('cy',function(d){
+  return yScale(d.money)
+})
+  .attr('r',function(d){
+  return rScale(d.Population)
+})
+  y_win_line.transition()
+  .attr('opacity',0)
+    y_win_text.transition()
+  .attr('opacity',0)
+    yLine.transition()
+    .attr('opacity', 1)
+  yLineText.transition()
+    .attr('opacity', 1)
+  yLineRaw.transition()
+    .attr('opacity', 0)
+  yLineRawText.transition()
+    .attr('opacity', 0)
+    college_year.transition()
+  .attr('opacity',1)
+  win_time_line.transition()
+  .attr('opacity',0)
+    test.transition()
+    .duration(1000)
+    .attr('opacity',0)
+    .attr('transform','rotate(-45)')
+    test_women.transition()
+    .duration(1000)
+    .attr('opacity',0)
+    .attr('transform','rotate(-45)')
+    point.transition()
+    .duration(1000)
+    .attr('opacity',1)
+    .attr('transform','rotate(0)')
+});
+
+svg.append('text')
+.text('College Money')
+.attr('x',w-150)
+.attr('y',h-265)
+</script>
+<div id="foot" class="w3-dark-grey w3-hover-black">
+
+<!--Twitter button-->
+<a href="https://twitter.com/suchalilnerd" class="twitter-follow-button" data-show-count="false">Follow @suchalilnerd</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</div>
+</body>
+</html>
+

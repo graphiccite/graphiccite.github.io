@@ -27,7 +27,7 @@ body, html {
 }
 
 /* Create a Parallax Effect */
-.bgimg-1, .bgimg-2, .bgimg-3 {
+.bgimg-1, .bgimg-2, .bgimg-3, .bgimg-4{
     opacity: 0.7;
     background-attachment: fixed;
     background-position: center;
@@ -50,6 +50,13 @@ body, html {
 /* Third image (Contact) */
 .bgimg-3 {
     background-image: url("images/chameleon.jpg");
+    min-height: 400px;
+}
+	
+
+/* forth image  */
+.bgimg-4 {
+    background-image: url("images/clown.jpg");
     min-height: 400px;
 }
 
@@ -156,6 +163,30 @@ function myFunction() {
   </div>
 </div>
 
+<!-- Second Parallax Image with Portfolio Text -->
+<div class="bgimg-4 w3-display-container">
+  <div class="w3-display-middle">
+    <span class="w3-xxlarge w3-text-light-grey w3-wide">Sidetrack</span>
+  </div>
+</div>
+	
+	<!-- Container (Portfolio Section) -->
+<div class="w3-content w3-container w3-padding-64">
+  <h3 class="w3-center">Sometimes I make other stuff</h3>
+  <p class="w3-center">Here are a couple of other infographics I've put together on random offtopics.<br><em>I was just interested and they make a nice picture.</em></p><br>
+
+  <!-- Responsive Grid. Four columns on tablets, laptops and desktops. Will stack on mobile devices/small screens (100% width) -->
+  <div class="w3-row-padding w3-center">
+    <div class="w3-col m3">
+      <a href="articles/judge.html"> <img src="images/fight.jpg" style="width:100%" class="w3-hover-opacity"/>
+      <span>Judging Journals</span></a>
+    </div>
+
+    <div class="w3-col m3">
+      <a href="articles/what_are_altmetrics.html"> <img src="https://altmetric-badges.a.ssl.fastly.net/?size=200&score=32&types=mmmmtttt" style="height:20%" class="w3-hover-opacity"/>
+      <span>What are Altmetrics?</span></a>
+    </div>
+	  
 <!-- Third Parallax Image with Portfolio Text -->
 <div class="bgimg-3 w3-display-container">
   <div class="w3-display-middle">

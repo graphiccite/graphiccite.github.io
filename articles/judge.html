@@ -207,7 +207,7 @@ var node = vis.selectAll("circle.node")
      
     //TEXT
     node.append("text")
-      .text(function(d, i) { return d.name; })
+      .text(function(d, i) { return d.name + " " + d.JIF; })
       .attr("font-family",  "Sans-Serif")
       .attr("fill","black")
       .attr("opacity",0)
